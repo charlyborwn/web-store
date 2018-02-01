@@ -315,7 +315,7 @@ public class ProductAddBean implements ProductAdd {
     static int number = 1000;
 
     public void randomAdd() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             ProductDTO p = new ProductDTO();
             p.setName("Random product " + ++number);
             p.setCount((int) (1000 * Math.random()));

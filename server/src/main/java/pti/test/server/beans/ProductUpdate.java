@@ -148,7 +148,7 @@ public class ProductUpdate implements Update {
     }
 
     /**
-     * Uploads an image from file system with further proportional resizing and writing to collection.
+     * Uploads an image with further proportional resizing and writing to file system.
      *
      * @param event image upload event
      * @throws IOException when any reading/writing error happens
