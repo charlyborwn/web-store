@@ -99,7 +99,7 @@ public class ImagesEngineImpl implements ImagesEngine {
             File[] files = file.listFiles();
             Arrays.asList(Objects.requireNonNull(files)).forEach(File::delete);
         } else {
-            logger.warn(path.concat(String.valueOf(ipk)).concat("/images/") + " is not exists.");
+            logger.warn(path.concat(String.valueOf(ipk)).concat("/images/") + " not exist.");
         }
         return true;
     }
@@ -115,7 +115,7 @@ public class ImagesEngineImpl implements ImagesEngine {
             deleteFolder = file.delete();
             logger.info("Path " + path.concat(String.valueOf(ipk)) + " was deleted.");
         } else {
-            logger.error("Path " + path.concat(String.valueOf(ipk)).concat("/images/") + " does not exists.");
+            logger.error("Path " + path.concat(String.valueOf(ipk)).concat("/images/") + " does not exist.");
         }
         File productDirectory = new File(path.concat(String.valueOf(ipk)));
         if (productDirectory.exists()) {
@@ -123,7 +123,7 @@ public class ImagesEngineImpl implements ImagesEngine {
             deleteMainImage = true;
             deleteFolder = productDirectory.delete();
         } else {
-            logger.error("Path " + path.concat(String.valueOf(ipk)) + " does not exists.");
+            logger.error("Path " + path.concat(String.valueOf(ipk)) + " does not exist.");
         }
         logger.info("Product files was deleted: ID " + ipk);
         return deleteImages & deleteFolder & deleteMainImage;
