@@ -312,10 +312,10 @@ public class ProductAddBean implements ProductAdd {
         this.filesCount = filesCount;
     }
 
-    static int number = 1000;
+    static int number = 1200;
 
     public void randomAdd() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 800; i++) {
             ProductDTO p = new ProductDTO();
             p.setName("Random product " + ++number);
             p.setCount((int) (1000 * Math.random()));

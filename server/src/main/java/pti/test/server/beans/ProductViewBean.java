@@ -77,16 +77,6 @@ public class ProductViewBean {
     }
 
     /**
-     * Obtains current user.
-     *
-     * @return current user
-     */
-//    private Users getUser() {
-//        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        return userService.findByMail(principal.getUsername());
-//    }
-
-    /**
      * Initiates <code>ProductDTO</code> product using obtained from faces
      * context external ID.
      */
