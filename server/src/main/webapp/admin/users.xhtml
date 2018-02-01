@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../layout.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="userList">
+
+            <p:dataTable id="userTable" var="user" value="#{usersBean.users}"
+                         widgetVar="usersTable" multiViewState="true"
+                         rows="10" paginator="true"
+                         selectionMode="single" selection="#{usersBean.selectedUser}"
+                         rowKey="#{user.mail}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="25,50"
+                    >
+
+                <p:column headerText="MAIL" filterBy="#{user.mail}" filterMatchMode="contains"
+                          style="background-size: contain">
+                    <p:link outcome="user" value="#{user.mail}">
+                        <f:param name="user_mail" value="#{user.mail}"/>
+                    </p:link>
+                </p:column>
+
+                <p:column headerText="NAME" filterBy="#{user.name}" filterMatchMode="contains"
+                          style="background-size: contain">
+                    <h:outputText value="#{user.name}"/>
+                </p:column>
+
+                <p:column headerText="SURNAME" filterBy="#{user.surname}" filterMatchMode="contains"
+                          style="background-size: contain">
+                    <h:outputText value="#{user.surname}"/>
+                </p:column>
+
+                <p:column headerText="ROLE" filterBy="#{user.role}" filterMatchMode="contains"
+                          style="background-size: contain">
+                    <h:outputText value="#{user.role}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:commandLink value="Product list" action="#{superRedirecter.toProductList()}"
+                           style="color: #052cb7;font-size: small;"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+</html>

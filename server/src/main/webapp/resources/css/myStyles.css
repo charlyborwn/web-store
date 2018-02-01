@@ -1,0 +1,14 @@
+body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: transparent;
+}
+
+.shopLayout {
+    position: absolute;
+    left: 10%;
+}
+
+.contactform1 button[type=submit]:hover {
+    background-color: #b49543;
+}

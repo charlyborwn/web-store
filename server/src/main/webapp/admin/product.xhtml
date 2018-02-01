@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../layout.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="productList" style="font-size: x-small">
+
+            <p:growl id="errorMessages" autoUpdate="true" closable="true"/>
+
+            <p:panel id="count" style="text-align: center; border: none; background: none">
+                <p:outputLabel
+                        style="color: #122b40; font-size: large;font-weight: bold"
+                        value="#{productsSimpleBean.productsCount()}"> products in store
+                </p:outputLabel>
+            </p:panel>
+
+            <p:dataTable id="tableStateDT" var="product" value="#{productsSimpleBean.products}"
+                         widgetVar="productsTable" multiViewState="true"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         selectionMode="single" selection="#{productsSimpleBean.selectedProduct}"
+                         rowKey="#{product.name}"
+                         emptyMessage="No products found with given criteria"
+                         filteredValue="#{productsSimpleBean.filteredProduct}"
+            >
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields:"/>
+                        <p:inputText id="globalFilter" onkeyup="PF('productsTable').filter()" style="width:150px"
+                                     placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="ID" filterBy="#{product.ipk}" filterMatchMode="contains"
+                          style="background-size: contain">
+                    <h:outputText value="#{product.ipk}"/>
+                </p:column>
+
+                <p:column headerText="PRODUCT NAME" filterBy="#{product.name}"
+                          filterMatchMode="contains">
+                    <p:link outcome="product_update" value="#{product.name}">
+                        <f:param name="id" value="#{product.ipk}"/>
+                    </p:link>
+                </p:column>
+
+                <p:column headerText="PRICE" filterBy="#{product.price}" filterMatchMode="contains"
+                          style="background-size: contain">
+                    <h:outputText value="#{product.price}"/>
+                </p:column>
+
+                <p:column headerText="COUNT" filterBy="#{product.count}"
+                          filterMatchMode="startsWith">
+                    <h:outputText value="#{product.count}"/>
+                </p:column>
+
+                <p:column headerText="COUNTRY" filterMatchMode="startsWith" filterBy="#{product.country}" style="background-size: contain">
+                    <h:outputText value="#{product.country}"/>
+                </p:column>
+
+                <p:column headerText="TYPE" filterBy="#{product.type.type}"
+                          filterMatchMode="exact"
+                          style="background-size: contain">
+                    <f:facet name="filter">
+                        <p:selectOneMenu value="#{productsSimpleBean.type}" onchange="PF('productsTable').filter()"
+                                         update=":productList:tableStateDT"
+                                         style="width:100px;">
+                            <p:ajax listener="#{typeListBean.onTypeChange(productsSimpleBean.type)}" update="cat"/>
+                            <f:selectItem itemLabel="All types" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{typeListBean.types}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{product.type.type}"/>
+                </p:column>
+
+                <p:column headerText="SUBTYPE" filterBy="#{product.type.category}"
+                          filterMatchMode="exact" style="background-size: contain">
+                    <f:facet name="filter">
+                        <p:selectOneMenu id="cat" value="#{productsSimpleBean.category}"
+                                         onchange="PF('productsTable').filter()" style="width:100px;">
+                            <f:selectItem itemLabel="All subtypes" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{typeListBean.categories}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{product.type.category}"/>
+                </p:column>
+
+                <p:column headerText="DO">
+                    <p:commandButton id="deleteButton"
+                                   actionListener="#{productsSimpleBean.deleteProduct()}"
+                                   icon="ui-icon-minusthick" title="Delete"
+                                   update=":productList:tableStateDT :productList:count"
+                                   style="outline:none">
+                        <f:param name="id" value="#{product.ipk}"/>
+                        <p:ajax action="#{productsSimpleBean}.init()"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:panelGrid columns="4" style="border: hidden">
+                <p:commandLink value="◄ Back to shop" action="#{superRedirecter.toShop()}"
+                               style="align-content: flex-end;color: #052cb7;"/>
+                <p:commandLink value="Add new Product" action="#{superRedirecter.toAddProductPage()}"
+                               style="align-content: flex-end;color: #052cb7;"/>
+                <p:commandLink value="Add new type or subtype" action="#{superRedirecter.toAddTypePage()}"
+                               style="align-content: flex-end;color: #052cb7;"/>
+                <p:commandLink value="Users list" action="#{superRedirecter.toUsers()}"
+                               style="align-content: flex-end;color: #052cb7;"/>
+            </p:panelGrid>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+</html>

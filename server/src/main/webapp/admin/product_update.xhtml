@@ -1,0 +1,254 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../layout.xhtml">
+
+    <ui:define name="content">
+
+        <link href="${contextPath}/resources/css/update.css" rel="stylesheet"/>
+
+        <h:form id="update_form" enctype="multipart/form-data" style="width:100%">
+
+            <f:metadata>
+                <f:viewParam name="id" value="#{productUpdate.ipk}"/>
+                <f:event type="preRenderView" listener="#{productUpdate.initProduct}"/>
+            </f:metadata>
+
+            <p:panel style="background: white;border: none">
+
+                <p:growl id="messages" autoUpdate="true" closable="true"/>
+
+                <p:panel style="text-align: center; border: none; background: none">
+                    <p:outputLabel
+                            style="color: #122b40; font-size: large;font-weight: bold">#{productUpdate.name} UPDATE
+                        WINDOW
+                    </p:outputLabel>
+                </p:panel>
+
+                <h:panelGrid id="update_panel" columns="2" style="border: outset;width:100%"
+                             columnClasses="fifty-percent top-alignment, fifty-percent top-alignment">
+
+                    <p:column>
+                        <p:panel id="basic" style="margin-bottom:20px; position:relative;border: none">
+
+                            <p:panel style="text-align: center; border: none; background: none">
+                                <p:outputLabel
+                                        style="color: #122b40; font-size: large;font-weight: bold">MAIN INFO
+                                </p:outputLabel>
+                            </p:panel>
+
+                            <h:panelGrid columns="2"
+                                         columnClasses="fifty-percent top-alignment, fifty-percent top-alignment"
+                                         style="width: 100%;color:#122b40; font-size: smaller;">
+                                <p:column>
+                                    <h:panelGrid columns="2" cellspacing="6">
+                                        <h:outputLabel for="name" value="Name:"/>
+                                        <p:inplace id="name" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.name}" required="true" label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel for="count" value="Count:"/>
+                                        <p:inplace id="count" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.count}" required="true" label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel for="price" value="Price:"/>
+                                        <p:inplace id="price" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.price}" required="true" label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel value="Type:"/>
+                                        <h:outputText value="#{productUpdate.TYPE.type}" required="true" label="text"/>
+
+                                        <h:outputLabel value="Subtype:"/>
+                                        <h:outputText value="#{productUpdate.TYPE.category}" required="true"
+                                                      label="text"/>
+
+                                    </h:panelGrid>
+                                </p:column>
+                                <p:column>
+                                    <p:panelGrid columns="2">
+                                        <h:outputLabel for="warranty" value="Warranty:"/>
+                                        <p:inplace id="warranty" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.warranty}" required="false"
+                                                         label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel for="date" value="Manufacturing date:"/>
+                                        <p:inplace id="date" editor="true" style="color: royalblue;">
+                                            <p:inputMask value="#{productUpdate.date}" mask="99/99/9999"
+                                                         required="false"
+                                                         label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel for="discount" value="Discount:"/>
+                                        <p:inplace id="discount" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.discount}" required="false"
+                                                         label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel for="country" value="Country:"/>
+                                        <p:inplace id="country" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.country}" required="false"
+                                                         label="text"/>
+                                        </p:inplace>
+
+                                        <h:outputLabel for="supplier" value="Supplier:"/>
+                                        <p:inplace id="supplier" editor="true" style="color: royalblue;">
+                                            <p:inputText value="#{productUpdate.supplier}" required="false"
+                                                         label="text"/>
+                                        </p:inplace>
+
+                                    </p:panelGrid>
+                                </p:column>
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <p:panel id="types" style="margin-bottom:20px;border: none">
+
+                            <p:panel style="text-align: center; border: none; background: none">
+                                <p:outputLabel
+                                        style="color: #122b40; font-size: large;font-weight: bold">TYPE AND SUBTYPE
+                                </p:outputLabel>
+                            </p:panel>
+
+                            <p:panelGrid columns="2" style="width: 100%;color:#122b40; font-size: smaller;">
+                                <p:column>
+                                    <h:panelGrid columns="2">
+                                        <p:column>
+                                            <p:outputLabel for="type" value="Type: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu id="type" value="#{productUpdate.type}"
+                                                             style="width:150px;">
+                                                <p:ajax listener="#{productUpdate.onTypeChange}" update="category"/>
+                                                <f:selectItem itemLabel="Select Type" itemValue=""
+                                                              noSelectionOption="true"/>
+                                                <f:selectItems value="#{productUpdate.types}"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </h:panelGrid>
+                                </p:column>
+
+                                <p:column>
+                                    <p:panelGrid columns="2">
+                                        <p:column>
+                                            <p:outputLabel for="category" value="Subtype: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu id="category" value="#{productUpdate.category}"
+                                                             style="width:150px">
+                                                <p:ajax listener="#{productUpdate.setTYPE}" update="category"/>
+                                                <f:selectItem itemLabel="Select subtype" itemValue=""
+                                                              noSelectionOption="false"/>
+                                                <f:selectItems value="#{productUpdate.categories}"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:panel id="additional" style="margin-bottom:20px;border: none">
+                            <p:panel style="text-align: center; border: none; background: none">
+                                <p:outputLabel
+                                        style="color: #122b40; font-size: large;font-weight: bold">ADDITIONAL INFO
+                                </p:outputLabel>
+                            </p:panel>
+                            <p:panel style="font-size: smaller; border: none;text-align: justify">
+                                <p:inplace id="description" editor="true" style="color: royalblue;">
+                                    <p:inputTextarea value="#{productUpdate.description}" required="false"
+                                                     label="text" style="width: 100%"/>
+                                </p:inplace>
+                            </p:panel>
+                        </p:panel>
+
+                        <p:panel id="image"
+                                 style="margin-bottom:20px;text-align: center;border: none;font-size: smaller">
+
+                            <p:panel style="text-align: center; border: none; background: none">
+                                <p:outputLabel
+                                        style="color: #122b40; font-size: large;font-weight: bold">MAIN PRODUCT IMAGE
+                                </p:outputLabel>
+                            </p:panel>
+
+                            <p:panel style="border: none">
+                                <p:graphicImage value="#{productUpdate.mainImage}" style="height:150px"/>
+                            </p:panel>
+                            <p:fileUpload fileUploadListener="#{productUpdate.uploadMainImage}"
+                                          mode="advanced" update=":update_form:image"
+                                          allowTypes="/(\.|\/)(jpg|jpeg|png|bmp|gif|JPG|JPEG|PNG|BMP|GIF)$/"
+                                          skinSimple="true"/>
+                        </p:panel>
+
+                    </p:column>
+
+                    <p:column>
+
+                        <p:panel id="galleria"
+                                 style="margin-bottom:20px;text-align: center;border: none;font-size: smaller">
+
+                            <p:panel style="text-align: center; border: none; background: none">
+                                <p:outputLabel
+                                        style="color: #122b40; font-size: large;font-weight: bold">GALLERY
+                                </p:outputLabel>
+                                <p:commandLink value="[clear from DB]" actionListener="#{productUpdate.clearFromDB()}"
+                                               update="galleria" style="text-decoration:none;outline:none;color:blue"/>
+                            </p:panel>
+
+                            <p:galleria value="#{productUpdate.images}" var="image" autoPlay="false"
+                                        style="border: none;">
+                                <p:commandLink value="[delete image]" update=":update_form:update_panel"
+                                               action="#{productUpdate.deleteImageFromGalleria()}"
+                                               style="text-decoration: none;outline: none;color:blue">
+                                    <f:param name="address" value="#{image}"/>
+                                </p:commandLink>
+                                <div/>
+                                <h:graphicImage name="#{image}"/>
+                            </p:galleria>
+                        </p:panel>
+
+                        <p:panel id="imupload"
+                                 style="margin-bottom:20px;text-align: center;border: none;font-size: smaller">
+
+                            <p:panel style="text-align: center; border: none; background: none">
+                                <p:outputLabel
+                                        style="color: #122b40; font-size: large;font-weight: bold">UPLOAD IMAGES TO
+                                    GALLERY
+                                </p:outputLabel>
+                            </p:panel>
+
+                            <p:fileUpload id="imaload" fileUploadListener="#{productUpdate.upload}"
+                                          mode="advanced" multiple="true" process="@form" update="@form"
+                                          allowTypes="/(\.|\/)(jpg|jpeg|png|bmp|gif|JPG|JPEG|PNG|BMP|GIF)$/"/>
+                        </p:panel>
+                    </p:column>
+                </h:panelGrid>
+
+
+                <p:panel style="border: hidden;display:block; text-align:center">
+                    <p:commandButton value="Update" actionListener="#{productUpdate.update}"
+                                     update=":update_form:update_panel"
+                                     style="width: 360px; background: #337ab7;font-size: large;font-weight: bold;color:white"/>
+                    <div/>
+                    <p:commandLink value="Reset to default" actionListener="#{productUpdate.setToDefault()}"
+                                   style="color: #052cb7;font-size: small;"
+                                   update=":update_form:update_panel"/>
+                    <p:separator style="width: 360px"/>
+                    <p:commandLink value="Product list" action="#{superRedirecter.toProductList()}"
+                                   style="color: #052cb7;font-size: small;"/>
+                    <div/>
+                    <p:commandLink value="To product page" style="color: #052cb7;font-size: small;"
+                                   actionListener="#{superRedirecter.toSelectedProduct(productUpdate.ipk)}"/>
+                </p:panel>
+
+            </p:panel>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+</html>
+

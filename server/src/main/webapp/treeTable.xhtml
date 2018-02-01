@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+    <ui:composition template="layout.xhtml">
+        <ui:define name="content">
+            <h:form id="categories" prependId="false" style="width: 150px;font-size: x-small;">
+                <p:panel style="border: none;text-align:center">
+                    <h:outputLabel value="Navigation" style="font-size: large; color: #2b542c;"/>
+                    <div style="height:10px"/>
+                    <p:treeTable value="#{typeViewBean.root}" var="type" style="border: none;text-align:left">
+                        <f:facet name="header">
+                            Choose a type
+                        </f:facet>
+                        <p:column>
+                            <p:commandLink value="#{type}"
+                                           action="#{productsListBean.setSelectedCategory(type)}"
+                                           actionListener="#{productsListBean.init}"
+                                           update=":center:product_list_user_form:products"
+                                           style="color: #255625">
+                                <f:param name="category" value="#{type}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:treeTable>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
+

@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pti</groupId>
+    <artifactId>web-store</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <version.compiler>1.8</version.compiler>
+        <version.compiler.plugin>3.6.1</version.compiler.plugin>
+        <version.spring>4.1.4.RELEASE</version.spring>
+        <version.hibernate>5.2.8.Final</version.hibernate>
+        <version.collections4>4.1</version.collections4>
+        <version.springdata>1.13.1.RELEASE</version.springdata>
+        <version.springsecurity>4.2.2.RELEASE</version.springsecurity>
+    </properties>
+
+
+    <modules>
+        <module>model</module>
+        <module>dao</module>
+        <module>service</module>
+        <module>controller</module>
+        <module>server</module>
+    </modules>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <type>pom</type>
+                <version>${version.spring}</version>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${version.springdata}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${version.springsecurity}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${version.springsecurity}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${version.collections4}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.compiler.plugin}</version>
+                <configuration>
+                    <source>${version.compiler}</source>
+                    <target>${version.compiler}</target>
+                    <testSource>${version.compiler}</testSource>
+                    <testTarget>${version.compiler}</testTarget>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

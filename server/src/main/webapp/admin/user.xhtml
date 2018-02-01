@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../layout.xhtml">
+
+    <ui:define name="content">
+
+        <f:metadata>
+            <f:viewParam name="user_mail" value="#{userBean.mail}"/>
+        </f:metadata>
+        <link href="${contextPath}/resources/css/product.css" rel="stylesheet"/>
+
+        <h:form id="user_history" style="font-size:small">
+
+            <p:panel id="user_panel" style="width: 1000px">
+                <p:panelGrid columns="2" style="width: 360px;">
+
+                    <h:outputLabel for="user_name" value="Name"/>
+                    <h:outputText id="user_name" value="#{userBean.user.name}"/>
+
+                    <h:outputLabel for="user_surname" value="Surname"/>
+                    <h:outputText id="user_surname" value="#{userBean.user.surname}"/>
+
+                    <h:outputLabel for="user_mail" value="Mail"/>
+                    <h:outputText id="user_mail" value="#{userBean.user.mail}"/>
+
+                    <h:outputLabel for="user_role" value="Role"/>
+                    <h:outputText id="user_role" value="#{userBean.user.role}"/>
+
+                </p:panelGrid>
+            </p:panel>
+
+            <p:panel id="info" style="width: 1000px;min-height:300px">
+                <p:panelGrid columns="2" style="width: 100%;"
+                             columnClasses="fifty-percent align-top, fifty-percent align-top">
+                    <p:column>
+                        <p:dataList value="#{userBean.dates}" var="date" type="unordered" itemType="none"
+                                    paginator="true"
+                                    rows="10" styleClass="paginated">
+                            <f:facet name="header">
+                                History
+                            </f:facet>
+                            <p:commandLink style="text-decoration: none;"
+                                           actionListener="#{userBean.selectedProducts(date)}"
+                                           update=":user_history:history_panel">
+                                <h:outputText value=">>> " style="font-size: small;color:blue;"/>
+                            </p:commandLink>
+                            <h:outputText value="#{userBean.simplyDate(date)}"
+                                          style="font-size: normal;color:black;font-weight:bold"/>
+                            <h:outputText value="#{userBean.simplyTime(date)}"
+                                          style="font-size: x-small;color:grey;font-weight:bold"/>
+                        </p:dataList>
+                    </p:column>
+                    <p:column>
+
+                        <p:dataList id="history_panel" value="#{userBean.productsHistoryInfo}" var="prod"
+                                    type="unordered"
+                                    itemType="none" paginator="true" rows="10">
+                            <f:facet name="header">
+                                Products
+                            </f:facet>
+                            <h:outputText value="Product key #{prod.ipk} "
+                                          style="font-size: x-small;color:grey;font-weight:bold"/>
+                            <p:commandLink actionListener="#{superRedirecter.toSelectedProduct(prod.ipk)}">
+                                <h:outputText value="#{prod.name}, Count: "
+                                              style="font-size: normal;color:darkblue;font-weight:bold"/>
+                            </p:commandLink>
+                            <h:outputText value="#{prod.count} "
+                                          style="font-size: normal;color:red;font-weight:bold"/>
+                        </p:dataList>
+                    </p:column>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="temp">
+                <p:panelGrid columns="2" style="width: 100%;"
+                             columnClasses="fifty-percent align-top, fifty-percent align-top">
+                    <p:column>
+                        <p:dataList id="temp_panel" value="#{userBean.getTempDates()}" var="temp" type="unordered"
+                                    itemType="none" paginator="true" rows="10">
+                            <f:facet name="header">
+                                Products in queue
+                            </f:facet>
+                            <p:commandLink style="text-decoration: none;outline:none"
+                                           actionListener="#{userBean.selectedTemps(temp)}"
+                                           update=":user_history:temp_panel1">
+                                <h:outputText value=">>> " style="font-size: small;color:blue;"/>
+                            </p:commandLink>
+                            <h:outputText value="#{userBean.simplyDate(temp)}"
+                                          style="font-size: normal;color:black;font-weight:bold"/>
+                            <h:outputText value="#{userBean.simplyTime(temp)}"
+                                          style="font-size: x-small;color:grey;font-weight:bold"/>
+                            <p:commandLink actionListener="#{userBean.accept(temp)}"
+                                           update=":user_history:info :user_history:temp"
+                                           style="text-decoration: none;outline:none">
+                                <h:outputText value="DONE"
+                                              action="#{userBean.clearTemps()}"
+                                              update="@form"
+                                              style="font-size: normal;color:darkblue;font-weight:bold"/>
+                            </p:commandLink>
+                        </p:dataList>
+                    </p:column>
+                    <p:column>
+                        <p:dataList id="temp_panel1" value="#{userBean.productsTempInfo}" var="prod"
+                                    type="unordered"
+                                    itemType="none" paginator="true" rows="10">
+                            <f:facet name="header">
+                                Products
+                            </f:facet>
+                            <h:outputText value="Product key #{prod.ipk} "
+                                          style="font-size: x-small;color:grey;font-weight:bold"/>
+                            <p:commandLink actionListener="#{superRedirecter.toSelectedProduct(prod.ipk)}">
+                                <h:outputText value="#{prod.name}, Count: "
+                                              style="font-size: normal;color:darkblue;font-weight:bold"/>
+                            </p:commandLink>
+                            <h:outputText value="#{prod.count} "
+                                          style="font-size: normal;color:red;font-weight:bold"/>
+                        </p:dataList>
+                    </p:column>
+                </p:panelGrid>
+            </p:panel>
+
+            <p:commandLink value="Users list" action="#{superRedirecter.toUsers()}"
+                           style="color: #052cb7;font-size: small;"/>
+            <div/>
+            <p:commandLink value="Product list" action="#{superRedirecter.toProductList()}"
+                           style="color: #052cb7;font-size: small;"/>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+    <ui:composition template="layout.xhtml">
+        <ui:define name="content">
+            <link href="${contextPath}/resources/css/product.css" rel="stylesheet"/>
+
+            <div id="formdiv">
+                <h:form id="cartForm" prependId="false" style="width: 1000px;margin-right:15px">
+
+                    <p:growl id="errorMessages" showDetail="true" autoUpdate="true" closable="true"/>
+
+                    <p:fieldset id="historyFieldset" legend="Shoping cart" style="min-height:500px">
+                        <p:dataScroller value="#{systemUserActionsBean.getCart()}" var="prod" id="cartScroller"
+                                        chunkSize="10">
+
+                            <h:panelGrid columns="3"
+                                         style=" border: dashed white;border-bottom-color: orangered;width:100%;"
+                                         columnClasses="thirty-percent fifty-percent fifty-percent">
+                                <p:column>
+                                    <p:link outcome="test">
+                                        <h:graphicImage name="#{prod.productDTO.pic}" styleClass="content"/>
+                                        <f:param name="id" value="#{prod.productDTO.ipk}"/>
+                                    </p:link>
+                                </p:column>
+                                <p:column>
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5" id="product" style="border: none">
+                                            <h:outputText value="Name:"/>
+                                            <h:outputText value="#{prod.productDTO.name}" style="font-weight: bold"/>
+
+                                            <h:outputText value="Count:"/>
+                                            <h:outputText value="#{prod.count}" style="font-weight: bold"/>
+
+                                            <h:outputText value="Price:"/>
+                                            <h:outputText value="#{prod.productDTO.price}€" style="font-weight: bold"/>
+
+                                            <h:outputText value="Total price:"/>
+                                            <h:outputText
+                                                    value="#{systemUserActionsBean.productCost(prod.count,prod.productDTO.price)}€"
+                                                    style="font-weight: bold"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </p:column>
+                                <p:column styleClass="leftAligned">
+                                    <div align="right">
+                                        <p:outputPanel styleClass="leftAligned">
+                                            <p:commandButton id="reduceButton"
+                                                             action="#{systemUserActionsBean.reduceProductCount(prod)}"
+                                                             icon="ui-icon-minusthick" title="Delete"
+                                                             style="outline: none"
+                                                             update=":cartForm:cartScroller :cartForm:info"/>
+                                            <p:commandButton id="addButton"
+                                                             action="#{systemUserActionsBean.induceProductCount(prod)}"
+                                                             icon="ui-icon-plusthick" title="Add one more"
+                                                             style="outline: none"
+                                                             update=":cartForm:cartScroller :cartForm:info"/>
+                                            <p:commandButton id="deleteButton"
+                                                             action="#{systemUserActionsBean.deleteFromCart(prod)}"
+                                                             icon="ui-icon-closethick" title="Delete drom cart"
+                                                             style="outline: none"
+                                                             update=":cartForm:cartScroller :cartForm:info"/>
+                                            <p:blockUI block="product" trigger="reduceButton">
+                                                LOADING<br/>
+                                                <h:graphicImage name="/icons/time-mini.PNG"/>
+                                            </p:blockUI>
+                                            <p:blockUI block="product" trigger="addButton">
+                                                LOADING<br/>
+                                                <h:graphicImage name="/icons/time-mini.PNG"/>
+                                            </p:blockUI>
+                                            <p:blockUI block="product" trigger="deleteButton">
+                                                LOADING<br/>
+                                                <h:graphicImage name="/icons/time-mini.PNG"/>
+                                            </p:blockUI>
+                                        </p:outputPanel>
+                                    </div>
+
+                                </p:column>
+                            </h:panelGrid>
+                        </p:dataScroller>
+                    </p:fieldset>
+
+                    <p:panelGrid columns="1" id="info">
+
+                        <h:outputText value="There are #{systemUserActionsBean.allCount()} products in your cart with
+                        #{systemUserActionsBean.allCost()}€ total cost"/>
+
+                        <p:commandButton type="submit" id="shop" value="Buy"
+                                         oncomplete="PF('buyDialog').show()"
+                                         style="width: 400px; background: #337ab7; color: white;font-size: large; border: none"
+                                         update=":cartForm:productDetail"
+                        />
+
+                    </p:panelGrid>
+                    <p:stack icon="/resources/icons/cart-stack-1.png" expanded="true"
+                             style="text-decoration: none;outline: none">
+                        <p:menuitem value="Service" icon="/resources/icons/mail-stack.png"
+                                    actionListener="#{superRedirecter.toService()}"
+                                    style="text-decoration: none;outline: none"/>
+                        <p:menuitem value="Orders" icon="/resources/icons/temp.png"
+                                    style="text-decoration: none;outline: none"
+                                    actionListener="#{superRedirecter.toTemp()}"/>
+                        <p:menuitem value="History" icon="/resources/icons/history-stack.png"
+                                    actionListener="#{superRedirecter.toHistory()}"
+                                    style="text-decoration: none;outline: none"/>
+                        <p:menuitem value="Favourites" icon="/resources/icons/favourites.png"
+                                    actionListener="#{superRedirecter.toFavs()}"
+                                    style="text-decoration: none;outline: none"/>
+                        <p:menuitem value="Cart" icon="/resources/icons/cart-mini.PNG"
+                                    actionListener="#{superRedirecter.toCart()}"
+                                    style="text-decoration: none;outline: none"/>
+                        <p:menuitem value="Home" icon="/resources/icons/home-stack.png"
+                                    actionListener="#{superRedirecter.toHome()}"
+                                    style="text-decoration: none;outline: none"/>
+                    </p:stack>
+
+
+                    <p:dialog header="Confirmation" widgetVar="buyDialog" showEffect="fade" hideEffect="fade"
+                              resizable="false" style="border: none;min-width:1000px;min-height:500px">
+                        <p:ajax event="close" update="@form"/>
+                        <p:outputPanel id="productDetail" style="text-align:center; height:450px;">
+                            <p:wizard flowListener="#{systemUserActionsBean.onFlowProcess}">
+                                <p:tab id="personal" title="Personal">
+                                    <p:panel header="Personal Details" style="border:none;min-height:350px">
+                                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="15">
+                                            <h:outputText value="Name: *"/>
+                                            <p:inputText value="#{systemUserActionsBean.name}"
+                                                         label="Name"/>
+
+                                            <h:outputText value="Surname: *"/>
+                                            <p:inputText value="#{systemUserActionsBean.surname}"
+                                                         label="Surname"/>
+
+                                            <h:outputText value="Phone: "/>
+                                            <p:inputMask value="#{systemUserActionsBean.phone}" mask="(999) 999-9999"
+                                                         styleClass="outputLabel"/>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>
+
+                                <p:tab id="address" title="Address">
+                                    <p:panel header="Address Details" style="border:none;min-height:350px">
+                                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="15">
+
+                                            <h:outputText value="The exact address: *"/>
+                                            <p:inputText value="#{systemUserActionsBean.address}"/>
+
+                                            <h:outputText value="Street: *"/>
+                                            <p:inputText value="#{systemUserActionsBean.street}"/>
+
+                                            <h:outputText value="Postal Code: "/>
+                                            <p:inputText value="#{systemUserActionsBean.postalCode}"/>
+
+                                            <h:outputText value="City: *"/>
+                                            <p:inputText value="#{systemUserActionsBean.city}"/>
+
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>
+
+                                <p:tab id="contact" title="Contact">
+                                    <p:panel header="Contact Information" style="border:none;min-height:350px">
+                                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="15">
+                                            <h:outputText value="Email: *"/>
+                                            <p:inputText value="#{systemUserActionsBean.mail}"
+                                                         label="Email"/>
+
+                                            <h:outputText value="Preferred date:"/>
+                                            <p:calendar value="#{systemUserActionsBean.date}"/>
+
+                                            <h:outputText value="Additional wishes: "/>
+                                            <p:inputText value="#{systemUserActionsBean.comment}"/>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>
+
+                                <p:tab id="payment" title="Payment">
+                                    <p:panel header="Payment" style="border:none;min-height:350px">
+                                        <h:panelGrid columns="2" columnClasses="label, value" cellpadding="15">
+                                            <p:outputLabel for="pay" value="Payment:"/>
+                                            <p:selectOneRadio id="pay" value="#{systemUserActionsBean.payment}">
+                                                <f:selectItem itemLabel="Cash" itemValue="Cash"/>
+                                                <f:selectItem itemLabel="Non-cash" itemValue="Non-cash"/>
+                                                <f:selectItem itemLabel="Other" itemValue="Other type of"/>
+                                            </p:selectOneRadio>
+                                            <p:outputLabel for="delivery" value="Delivery:"/>
+                                            <p:selectOneRadio id="delivery" value="#{systemUserActionsBean.delivery}">
+                                                <f:selectItem itemLabel="To door" itemValue="to door"/>
+                                                <f:selectItem itemLabel="To post-office" itemValue="to post-office"/>
+                                                <f:selectItem itemLabel="Self-removal" itemValue="self-removal"/>
+                                            </p:selectOneRadio>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:tab>
+
+                                <p:tab id="confirm" title="Confirmation">
+                                    <p:panel header="Confirmation" style="border:none;min-height:350px">
+                                        <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid"
+                                                     style="width:100%">
+                                            <h:panelGrid columns="2" columnClasses="label, value" cellpadding="10"
+                                                         style="text-align:left">
+                                                <h:outputText value="Name: "/>
+                                                <h:outputText value="#{systemUserActionsBean.user.name}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+                                                <h:outputText value="Surname: "/>
+                                                <h:outputText value="#{systemUserActionsBean.user.surname}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+                                                <h:outputText value="Phone "/>
+                                                <h:outputText value="#{systemUserActionsBean.phone}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+                                            </h:panelGrid>
+
+                                            <h:panelGrid columns="2" columnClasses="label, value" cellpadding="10"
+                                                         style="text-align:left">
+                                                <h:outputText value="Street: "/>
+                                                <h:outputText value="#{systemUserActionsBean.street}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+                                                <h:outputText value="Postal: "/>
+                                                <h:outputText value="#{systemUserActionsBean.postalCode}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+                                                <h:outputText value="City: "/>
+                                                <h:outputText value="#{systemUserActionsBean.city}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+                                            </h:panelGrid>
+
+                                            <h:panelGrid columns="2" columnClasses="label, value" cellpadding="10"
+                                                         style="text-align:left">
+                                                <h:outputText value="Email: "/>
+                                                <h:outputText value="#{systemUserActionsBean.user.mail}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+                                                <h:outputText value="Preferred date:"/>
+                                                <h:outputText value="#{systemUserActionsBean.getSimpleDate()}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+
+                                                <h:outputText value="Wishes: "/>
+                                                <h:outputText value="#{systemUserActionsBean.comment}"
+                                                              styleClass="outputLabel" style="color: #006185"/>
+
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                        <p:panel style="border:none;width=100%">
+                                            <h:outputText
+                                                    value="Total cost: #{systemUserActionsBean.allCost()}€. #{systemUserActionsBean.payment} payment,
+                                                    #{systemUserActionsBean.delivery} delivery."/>
+                                        </p:panel>
+
+                                        <p:commandButton value="Submit" actionListener="#{systemUserActionsBean.buy()}"
+                                                         onclick="PF('buyDialog').hide()" ajax="false"
+                                                         style="width: 400px; background: #337ab7; color: white;font-size: large; border: none">
+                                            <p:fileDownload value="#{systemUserActionsBean.document}"/>
+                                        </p:commandButton>
+                                    </p:panel>
+                                </p:tab>
+                            </p:wizard>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

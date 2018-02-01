@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="content">
+
+        <div id="formdiv">
+            <link href="${contextPath}/resources/css/product.css" rel="stylesheet"/>
+            <h:form id="loginForm" prependId="false">
+                <!--styleClass="messageSignIn"-->
+                <f:metadata>
+                    <f:event listener="#{loginBean.checkLoginErrors}"
+                             type="preRenderView"></f:event>
+                </f:metadata>
+
+                <p:panel style="width: 400px; min-height:300px;margin-top:100px;border:outset">
+
+                    <p:messages id="errorMessages" showDetail="false" autoUpdate="true" closable="true"/>
+
+                    <p:outputLabel value="Log in with your account"
+                                   style="font-weight:bold;color:marine;font-size:small"/>
+                    <div style="height:10px"/>
+                    <h:panelGrid columns="2" style="width:100%" cellpadding="10">
+
+                        <p:outputLabel for="username" value="Login"/>
+                        <p:inputText id="username" label="username"
+                                     style="height:30px"/>
+
+                        <p:outputLabel for="password" value="Password"/>
+                        <p:password id="password" label="password"
+                                    style="height:30px"/>
+
+                    </h:panelGrid>
+
+                    <div style="height:10px"/>
+                    <h:commandButton type="submit" id="login" value="Login"
+                                     action="#{loginBean.doLogin}" styleClass="btn btn-lg btn-primary"
+                                     style="width:100%;border:none;height:46px"/>
+                    <div style="height:10px"/>
+                    <h:commandButton type="submit" id="register" value="Registration"
+                                     action="#{superRedirecter.toRegistration()}"
+                                     style="width:100%;border:none;height:46px"
+                                     styleClass="btn btn-lg btn-primary"/>
+
+                </p:panel>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

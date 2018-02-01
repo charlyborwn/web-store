@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="content">
+
+
+        <link href="${contextPath}/resources/css/product.css" rel="stylesheet"/>
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/primefaces-ui-darkness/theme.css"/>
+        <div id="formdiv">
+            <h:form id="user_temp" style="width: 1000px;">
+
+                <p:fieldset id="historyFieldset" legend="History" style="height:570px">
+                    <p:panel style="background-color:orange !important; border:none;height:50px;text-align:center">
+                        <h:outputText value="#{userEngineImpl.getUserName()} current orders"
+                                      style="font-size:x-large;color:white"/>
+                    </p:panel>
+                    <p:panel id="temp" style="border:none;">
+                        <p:panelGrid columns="2" style="width: 100%;"
+                                     columnClasses="fifty-percent align-top, fifty-percent align-top">
+                            <p:column>
+                                <p:dataList id="temp_panel" value="#{userHistoryBean.getTempDates()}" var="temp"
+                                            type="unordered"
+                                            itemType="none" paginator="true" rows="10">
+                                    <f:facet name="header">
+                                        Products in queue
+                                    </f:facet>
+                                    <p:commandLink style="text-decoration: none;outline: none"
+                                                   actionListener="#{userHistoryBean.selectedTemps(temp)}"
+                                                   update=":user_temp:temp_panel1">
+                                        <h:outputText value=">>> " style="font-size: small;color:blue;"/>
+                                    </p:commandLink>
+                                    <h:outputText value="#{userHistoryBean.simplyDate(temp)}"
+                                                  style="font-size: normal;color:white;font-weight:bold"/>
+                                    <h:outputText value="#{userHistoryBean.simplyTime(temp)}"
+                                                  style="font-size: x-small;color:grey;font-weight:bold"/>
+                                    <p:commandLink style="text-decoration: none;outline:none"
+                                                   actionListener="#{userHistoryBean.decline(temp)}"
+                                                   update=":user_temp:temp">
+                                        <h:outputText value=" [decline]"
+                                                      update="@form"
+                                                      style="font-size: normal;color:darkblue;font-weight:bold"/>
+                                    </p:commandLink>
+                                </p:dataList>
+                            </p:column>
+                            <p:column>
+                                <p:dataList id="temp_panel1" value="#{userHistoryBean.productsTempInfo}" var="prod"
+                                            type="unordered"
+                                            itemType="none" paginator="true" rows="10">
+                                    <f:facet name="header">
+                                        Products
+                                    </f:facet>
+                                    <p:commandLink actionListener="#{superRedirecter.toSelectedProduct(prod.ipk)}"
+                                                   style="text-decoration:none;underline:none">
+                                        <h:outputText value="#{prod.name}"
+                                                      style="font-size: normal;color:orange;font-weight:bold"/>
+                                    </p:commandLink>
+                                    <h:outputText value=" : #{prod.count} "
+                                                  style="font-size: normal;color:red;font-weight:bold"/>
+                                    <h:outputText value="(Product key #{prod.ipk})"
+                                                  style="font-size: x-small;color:grey;font-weight:bold"/>
+                                </p:dataList>
+                            </p:column>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:fieldset>
+
+                <p:stack icon="/resources/icons/cart-stack-1.png" expanded="true"
+                         style="text-decoration: none;outline: none">
+                    <p:menuitem value="Service" icon="/resources/icons/mail-stack.png"
+                                actionListener="#{superRedirecter.toService()}"
+                                style="text-decoration: none;outline: none"/>
+                    <p:menuitem value="Orders" icon="/resources/icons/temp.png"
+                                style="text-decoration: none;outline: none"
+                                actionListener="#{superRedirecter.toTemp()}"/>
+                    <p:menuitem value="History" icon="/resources/icons/history-stack.png"
+                                actionListener="#{superRedirecter.toHistory()}"
+                                style="text-decoration: none;outline: none"/>
+                    <p:menuitem value="Favourites" icon="/resources/icons/favourites.png"
+                                actionListener="#{superRedirecter.toFavs()}"
+                                style="text-decoration: none;outline: none"/>
+                    <p:menuitem value="Cart" icon="/resources/icons/cart-mini.PNG"
+                                actionListener="#{superRedirecter.toCart()}"
+                                style="text-decoration: none;outline: none"/>
+                    <p:menuitem value="Home" icon="/resources/icons/home-stack.png"
+                                actionListener="#{superRedirecter.toHome()}"
+                                style="text-decoration: none;outline: none"/>
+                </p:stack>
+
+            </h:form>
+        </div>
+
+    </ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../layout.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="uploadForm" enctype="multipart/form-data">
+
+            <p:growl id="growl" showDetail="false" sticky="true" escape="1"/>
+
+            <p:panel style="border: hidden;font-size: smaller">
+                <h:panelGrid columns="2" cellpadding="7">
+                    <p:outputLabel for="name" value="Name: "/>
+                    <p:inputText id="name" value="#{productAddBean.name}"/>
+
+                    <p:outputLabel for="count" value="Count:"/>
+                    <p:inputText id="count" value="#{productAddBean.count}"/>
+
+                    <p:outputLabel for="price" value="Price:"/>
+                    <p:inputText id="price" value="#{productAddBean.price}"/>
+
+                    <p:outputLabel value="Warranty:" for="warranty"/>
+                    <p:inputText id="warranty" value="#{productInfoBean.warranty}"/>
+
+                    <p:outputLabel value="Manufacturing date:" for="date"/>
+                    <p:inputMask id="date" value="#{productInfoBean.date}" mask="99/99/9999"/>
+
+                    <p:outputLabel value="Discount:" for="discount"/>
+                    <p:inputText id="discount" value="#{productInfoBean.discount}"/>
+
+                    <p:outputLabel value="Country:" for="country"/>
+                    <p:inputText id="country" value="#{productAddBean.country}"/>
+
+                    <p:outputLabel value="Supplier:" for="supplier"/>
+                    <p:inputText id="supplier" value="#{productAddBean.supplier}"/>
+
+                    <p:outputLabel value="Description:" for="description"/>
+                    <p:inputText id="description" value="#{productInfoBean.description}"/>
+
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel style="border: hidden;font-size: smaller">
+                <p:outputLabel value="Image:" for="img"/>
+                <p:fileUpload id="img" value="#{productAddBean.uploadedFile}" mode="simple" skinSimple="true"/>
+            </p:panel>
+
+            <p:panel style="border: hidden;font-size: smaller">
+                <p:multiSelectListbox value="#{productAddBean.selection}" effect="slide" header="Types"
+                                      showHeaders="true">
+                    <f:selectItems value="#{productAddBean.types}"/>
+                </p:multiSelectListbox>
+
+            </p:panel>
+
+            <p:panel id="multiUploadPanel" style="border: none;font-size: smaller">
+                <p:progressBar widgetVar="progressBar" ajax="true" value="#{productAddBean.progress}"
+                               labelTemplate="{value}%" styleClass="animated" global="false">
+                </p:progressBar>
+                <p:fileUpload id="imaload" fileUploadListener="#{productAddBean.upload}"
+                              mode="advanced" multiple="true" process="multiUploadPanel"
+                              update="multiUploadPanel" widgetVar="images"
+                              allowTypes="/(\.|\/)(jpg|jpeg|png|bmp|gif|JPG|JPEG|PNG|BMP|GIF)$/"
+                              onstart="$('#uploadForm\\:counter').val(PF('images').files.length)"
+                              >
+                    <h:inputHidden id="counter" value="#{productAddBean.filesCount}"/>
+                </p:fileUpload>
+
+            </p:panel>
+
+            <p:panel style="border: hidden;font-size: smaller">
+                <p:commandButton id="add" actionListener="#{productAddBean.createProduct}" value="ADD!"
+                                 ajax="false" process="@form"
+                                 style="width: 360px; background: #337ab7;font-weight: bold;color:white"/>
+            </p:panel>
+
+            <p:panel style="border: hidden;font-size: smaller">
+                <p:separator style="width: 460px"/>
+                <p:panelGrid columns="1" style="border: hidden;">
+                    <p:commandLink value="Add new Product" action="#{superRedirecter.toAddProductPage()}"
+                                   style="align-content: flex-end;color: #052cb7;"/>
+                    <p:commandLink value="Add random products" action="#{productAddBean.randomAdd()}"
+                                   style="align-content: flex-end;color: #052cb7;"/>
+                    <p:commandLink value="Product list" action="#{superRedirecter.toProductList()}"
+                                   style="align-content: flex-end;color: #052cb7;"/>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

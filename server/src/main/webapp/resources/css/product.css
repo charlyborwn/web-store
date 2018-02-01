@@ -1,0 +1,91 @@
+
+.fifty-percent {
+    width: 50%;
+}
+
+.thirty-percent {
+    width: 25%;
+}
+
+.thirty-three {
+    width: 33%;
+}
+
+.ten-percent {
+    width: 10%;
+}
+
+.nineteen-percent {
+    width: 90%;
+}
+
+.five-percent {
+    width: 3%;
+}
+
+.nineteen-five-percent {
+    width: 97%;
+}
+
+.companyHeaderGrid.ui-panelgrid > * > tr,
+.companyHeaderGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.vertical-center {
+    display: block;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    height: 14rem;
+}
+
+.jumbotron {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ui-icon {
+    text-indent: 0;
+}
+
+.ui-panelgrid > * > tr,
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.ui-datascrool > * > tr {
+    border: none;
+}
+
+.ui-icon {
+    text-indent: 0;
+}
+
+.leftAligned {
+    horiz-align: left;
+}
+
+#formdiv {
+    margin: 0 auto;
+}
+
+.align-top {
+    vertical-align: top;
+}
+
+.btn, .btn-lg {
+    padding: 6px 16px;
+    line-height: 1.3333333;
+    border-radius: 3px
+}
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4
+}

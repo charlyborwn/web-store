@@ -1,0 +1,47 @@
+
+.fifty-percent {
+    width: 50%;
+}
+
+.top-alignment {
+    vertical-align: top;
+}
+
+.ui-panel .ui-panel-titlebar {
+    padding: 0;
+}
+
+.transparentBackground tr,
+.transparentBackground td {
+    background: transparent !important;
+}
+
+.panelCenter {
+    margin: 0 auto;
+}
+
+.ui-panelgrid > * > tr,
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.myLabel {
+    border: 2px solid #AAA;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin: 2px;
+    background: #DDD;
+    display: inline-block;
+}
+.myLabel:hover {
+    background: #CCC;
+}
+.myLabel:active {
+    background: #CCF;
+}
+.myLabel :invalid + span {
+    color: #A44;
+}
+.myLabel :valid + span {
+    color: #4A4;
+}

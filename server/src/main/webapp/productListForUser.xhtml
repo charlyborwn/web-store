@@ -1,0 +1,127 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="layout.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="product_list_user_form">
+
+            <p:growl id="errorMessages" showDetail="true" autoUpdate="true" closable="true"/>
+
+            <p:dataGrid var="product" value="#{productsListBean.productsDTO}" columns="3" layout="grid"
+                        rows="12" paginator="true" id="products" paginatorPosition="top"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        style="width: 665px;font-size: small;border: none">
+
+                <f:facet name="header">
+                    <p:panel id="search" style="background: transparent;width:100%;text-align:right;border:none">
+                        <p:inputText var="sr" value="#{productsListBean.searchRequest}"/>
+                        <p:commandLink actionListener="#{productsListBean.init()}" title="Search"
+                                       update="products"
+                                       style="outline:none">
+                            <h:graphicImage name="/icons/search.png" style="height:20px"/>
+                        </p:commandLink>
+                    </p:panel>
+
+                </f:facet>
+
+                <p:panel id="productPanel"
+                         style="text-align:center;border: outset #d3d1ff;width=100%;text-align:center">
+                    <h:panelGrid columns="1" style="width:100%;height: auto;">
+
+                        <p:commandLink actionListener="#{superRedirecter.toProductPage()}" value="#{product.name}"
+                                       style="font-weight:bold;text-decoration:none">
+                            <f:param name="id" value="#{product.ipk}"/>
+                        </p:commandLink>
+
+                        <p:commandLink actionListener="#{superRedirecter.toProductPage()}"
+                                       style="font-weight:bold;text-decoration:none">
+                            <h:graphicImage name="#{product.pic}"/>
+                            <f:param name="id" value="#{product.ipk}"/>
+                        </p:commandLink>
+
+                        <h:outputText value="#{product.price}€" style="font-style: italic"/>
+
+                        <p:panelGrid columns="3" styleClass="ui-noborder" style="width:100%;"
+                        >
+
+                            <p:column>
+                                <p:commandLink id="buyButton" actionListener="#{systemUserActionsBean.addToCart()}"
+                                               update="mini_cart_form" type="submit" title="Add to cart"
+                                               style="outline:none">
+                                    <h:graphicImage name="icons/toCart.PNG" style="width:40px"/>
+                                    <f:param name="id" value="#{product.ipk}"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink update=":center:product_list_user_form:productDetail"
+                                               oncomplete="PF('productDialog').show()"
+                                               title="Details" id="dialogButton">
+                                    <h:graphicImage name="icons/details.PNG" style="width:40px"/>
+                                    <f:param name="id" value="#{product.ipk}"/>
+                                    <f:setPropertyActionListener value="#{product}"
+                                                                 target="#{productsListBean.selectedProduct}"/>
+                                </p:commandLink>
+                                <p:blockUI block="productPanel" trigger="buyButton">
+                                    LOADING<br/>
+                                    <h:graphicImage name="/icons/time-mini.PNG"/>
+                                </p:blockUI>
+                                <p:blockUI block="productPanel" trigger="dialogButton">
+                                    LOADING<br/>
+                                    <h:graphicImage name="/icons/time-mini.PNG"/>
+                                </p:blockUI>
+                            </p:column>
+                            <p:column>
+                                <p:commandLink
+                                        actionListener="#{systemUserActionsBean.addToFav(product.ipk)}"
+                                        id="star" style="text-decoration: none;outline: none;">
+                                    <h:graphicImage name="icons/star.PNG" title="Add to favourites" style="width:40px"/>
+                                    <f:param name="id" value="#{product.ipk}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:panelGrid>
+                    </h:panelGrid>
+                </p:panel>
+            </p:dataGrid>
+
+            <p:blockUI id="block" block="products" trigger="products">
+                LOADING<br/>
+                <h:graphicImage name="/icons/time-mini.PNG"/>
+            </p:blockUI>
+
+
+            <p:dialog header="Info" widgetVar="productDialog" showEffect="fade" hideEffect="fade"
+                      resizable="false" style="border: none">
+                <p:outputPanel id="productDetail" style="text-align:center;">
+                    <p:panelGrid columns="2" rendered="#{not empty productsListBean.selectedProduct}"
+                                 style="width: 300px; border: none">
+                        <f:facet name="header">
+                            <h:graphicImage name="#{productsListBean.selectedProduct.pic}"/>
+                        </f:facet>
+
+                        <p:outputLabel value="Name: "/>
+                        <h:outputText value="#{productsListBean.selectedProduct.name}"/>
+
+                        <p:outputLabel value="Price: "/>
+                        <h:outputText value="#{productsListBean.selectedProduct.price}€"/>
+
+                        <p:outputLabel value="Subtype: "/>
+                        <h:outputText value="#{productsListBean.selectedProduct.type.category}"/>
+
+                        <p:outputLabel value="Country: "/>
+                        <h:outputText value="#{productsListBean.selectedProduct.country}"/>
+
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+</html>
