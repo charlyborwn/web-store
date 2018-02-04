@@ -39,30 +39,25 @@ public class ImagesEngineImpl implements ImagesEngine {
 
     @Override
     public String writeImage(BufferedImage image, String format, String address, String name) {
-        System.out.println("writeImage1" + LocalTime.now());
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
         File file = new File(path + address);
         if (!file.exists()) {
             file.mkdirs();
         }
         String imageAddress = null;
-        System.out.println("writeImage2" + LocalTime.now());
         try {
             ImageIO.write(image, format, new File(file.getAbsolutePath().concat("/").concat(name)));
             imageAddress = "/toys/" + address.concat(name);
         } catch (IOException io) {
             logger.error(io.getMessage());
         }
-        System.out.println("writeImage3" + LocalTime.now());
         return imageAddress;
 
     }
 
     @Override
     public BufferedImage resizeImage(UploadedFile upl, int width, int height) throws IOException {
-        System.out.println("resizeImage1" + LocalTime.now());
         BufferedImage input = ImageIO.read(upl.getInputstream());
-        System.out.println("resizeImage1-1" + LocalTime.now());
         if (width == -1 | height == -1) {
             width = input.getWidth();
             height = input.getHeight();
@@ -74,14 +69,12 @@ public class ImagesEngineImpl implements ImagesEngine {
                 height = 400;
             }
         }
-        System.out.println("resizeImage2" + LocalTime.now());
         int imageType = input.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : input.getType();
         BufferedImage output = new BufferedImage(width, height, imageType);
         Graphics2D g2d = output.createGraphics();
         g2d.drawImage(input, 0, 0, width, height, null);
         g2d.dispose();
         logger.info("Image " + upl.getFileName() + " has been resized.");
-        System.out.println("resizeImage3" + LocalTime.now());
         return output;
     }
 
@@ -197,21 +190,50 @@ public class ImagesEngineImpl implements ImagesEngine {
         List<Long> products = productEngine.getProducts().stream().map(ProductDTO::getIpk).collect(Collectors.toList());
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
         List<String> folders = Arrays.asList(new File(path).listFiles()).stream().map(x -> x.getName()).collect(Collectors.toList());
-        List<Long> foldersToBeDeleted = new ArrayList<>();
         for (String f : folders) {
-            if (!products.contains(Long.valueOf(f))) {
-                //System.out.println(f);
-                foldersToBeDeleted.add(Long.valueOf(f));
+            try {
+                if (!products.contains(Long.valueOf(f))) {
+                    deleteFolder(new File(path.concat("/") + f));
+                }
+            } catch (NumberFormatException e) {
+                deleteFolder(new File(path.concat("/") + f));
             }
         }
-        long l = System.nanoTime();
         ForkJoinPool pool = new ForkJoinPool(8);
         Integer invoke = pool.invoke(new FileReviewer(0, products.size(), products.size(), products));
         System.out.println(invoke);
-//        for (Long p : products) {
-//            serveFileSystem(p);
-//        }
-        System.out.println(System.nanoTime() - l);
+    }
+
+    private synchronized void deleteFolder(File folder) {
+        if (!folder.exists()) {
+            return;
+        }
+        List<File> files = Arrays.asList(folder.listFiles());
+        if (folder.getAbsolutePath().replaceAll("\\\\", "/")
+                .equals(MyProperties.getInstance().getProperty("images_path").concat("/toys"))) {
+            return;
+        }
+        if (files.size() > 10) {
+            return;
+        }
+        if (files.size() == 0) {
+            folder.delete();
+            deleteFolder(folder.getParentFile());
+        }
+        for (File f : files) {
+            if (f.isFile()) {
+                f.delete();
+            }
+        }
+        if (folder.exists()) {
+            List<File> files1 = Arrays.asList(folder.listFiles());
+            for (File f : files1) {
+                deleteFolder(f);
+            }
+            deleteFolder(folder);
+        }
+        return;
+
     }
 
     class FileReviewer extends RecursiveTask<Integer> {
@@ -244,4 +266,6 @@ public class ImagesEngineImpl implements ImagesEngine {
             }
         }
     }
+
+
 }
