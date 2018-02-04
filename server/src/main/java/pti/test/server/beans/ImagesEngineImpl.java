@@ -205,35 +205,41 @@ public class ImagesEngineImpl implements ImagesEngine {
     }
 
     private synchronized void deleteFolder(File folder) {
-        if (!folder.exists()) {
-            return;
-        }
-        List<File> files = Arrays.asList(folder.listFiles());
         if (folder.getAbsolutePath().replaceAll("\\\\", "/")
                 .equals(MyProperties.getInstance().getProperty("images_path").concat("/toys"))) {
             return;
         }
-        if (files.size() > 10) {
+        if (!folder.exists()) {
             return;
         }
-        if (files.size() == 0) {
+        int filesLength = folder.listFiles().length;
+        if (filesLength == 0) {
             folder.delete();
+            logger.info("Folder " + folder.getName() + " deleted.");
             deleteFolder(folder.getParentFile());
-        }
-        for (File f : files) {
-            if (f.isFile()) {
-                f.delete();
+        } else {
+            List<File> files = Arrays.asList(folder.listFiles());
+            if (files.size() > 100) {
+                return;
             }
-        }
-        if (folder.exists()) {
-            List<File> files1 = Arrays.asList(folder.listFiles());
-            for (File f : files1) {
-                deleteFolder(f);
+            for (File f : files) {
+                if (f.isFile()) {
+                    f.delete();
+                    logger.info("File " + f.getName() + " deleted.");
+                }
             }
-            deleteFolder(folder);
+            List<File> directories = Arrays.asList(folder.listFiles());
+            if (directories.size() == 0) {
+                folder.delete();
+                logger.info("Folder " + folder.getName() + " deleted.");
+                deleteFolder(folder.getParentFile());
+            } else {
+                for (File f : directories) {
+                    deleteFolder(f);
+                }
+            }
         }
         return;
-
     }
 
     class FileReviewer extends RecursiveTask<Integer> {
