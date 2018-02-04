@@ -76,10 +76,6 @@ public class ProductsSimpleBean {
 
     }
 
-    public void reviewFS() {
-        imagesEngine.reviewFS();
-    }
-
     public long productsCount() {
         return productEngine.count();
     }
