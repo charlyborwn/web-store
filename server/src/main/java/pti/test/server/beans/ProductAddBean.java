@@ -312,10 +312,12 @@ public class ProductAddBean implements ProductAdd {
         this.filesCount = filesCount;
     }
 
-    static int number = 1200;
+    static int number = 2000;
+    File file = new File("C:\\Users\\Romashka\\Desktop\\New folder");
+    File[] files = file.listFiles();
 
     public void randomAdd() {
-        for (int i = 0; i < 800; i++) {
+        for (int i = 0; i < 1000; i++) {
             ProductDTO p = new ProductDTO();
             p.setName("Random product " + ++number);
             p.setCount((int) (1000 * Math.random()));
@@ -334,8 +336,6 @@ public class ProductAddBean implements ProductAdd {
             info.put("Discount", String.valueOf((int) (50 * Math.random())));
             info.put("Date", "null");
             p.setInfo(info);
-            File file = new File("C:\\Users\\Romashka\\Desktop\\New folder");
-            File[] files = file.listFiles();
             int fileNum = (int) (files.length * Math.random());
             try {
                 BufferedImage bufferedImage = ImageIO.read(files[fileNum]);
@@ -350,6 +350,7 @@ public class ProductAddBean implements ProductAdd {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            p.setPic("");
             p.setPics(new ArrayList<>());
             saveProduct(p);
         }

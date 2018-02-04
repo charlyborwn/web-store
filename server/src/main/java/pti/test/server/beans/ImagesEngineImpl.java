@@ -6,28 +6,30 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import pti.test.controller.Controller;
 import pti.test.model.DTO.ProductDTO;
 import pti.test.server.MyProperties;
 import pti.test.server.interfaces.ImagesEngine;
 import pti.test.server.interfaces.ProductEngine;
 
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
 @ManagedBean
 @RestController
 public class ImagesEngineImpl implements ImagesEngine {
+
+    private static final int NUM_THREADS = 8;
 
     @Autowired
     private ProductEngine productEngine;
@@ -37,25 +39,30 @@ public class ImagesEngineImpl implements ImagesEngine {
 
     @Override
     public String writeImage(BufferedImage image, String format, String address, String name) {
+        System.out.println("writeImage1" + LocalTime.now());
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
         File file = new File(path + address);
         if (!file.exists()) {
             file.mkdirs();
         }
         String imageAddress = null;
+        System.out.println("writeImage2" + LocalTime.now());
         try {
             ImageIO.write(image, format, new File(file.getAbsolutePath().concat("/").concat(name)));
             imageAddress = "/toys/" + address.concat(name);
         } catch (IOException io) {
             logger.error(io.getMessage());
         }
+        System.out.println("writeImage3" + LocalTime.now());
         return imageAddress;
 
     }
 
     @Override
     public BufferedImage resizeImage(UploadedFile upl, int width, int height) throws IOException {
+        System.out.println("resizeImage1" + LocalTime.now());
         BufferedImage input = ImageIO.read(upl.getInputstream());
+        System.out.println("resizeImage1-1" + LocalTime.now());
         if (width == -1 | height == -1) {
             width = input.getWidth();
             height = input.getHeight();
@@ -67,12 +74,14 @@ public class ImagesEngineImpl implements ImagesEngine {
                 height = 400;
             }
         }
+        System.out.println("resizeImage2" + LocalTime.now());
         int imageType = input.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : input.getType();
         BufferedImage output = new BufferedImage(width, height, imageType);
         Graphics2D g2d = output.createGraphics();
         g2d.drawImage(input, 0, 0, width, height, null);
         g2d.dispose();
         logger.info("Image " + upl.getFileName() + " has been resized.");
+        System.out.println("resizeImage3" + LocalTime.now());
         return output;
     }
 
@@ -183,4 +192,56 @@ public class ImagesEngineImpl implements ImagesEngine {
         }
     }
 
+    @Override
+    public void reviewFS() {
+        List<Long> products = productEngine.getProducts().stream().map(ProductDTO::getIpk).collect(Collectors.toList());
+        String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
+        List<String> folders = Arrays.asList(new File(path).listFiles()).stream().map(x -> x.getName()).collect(Collectors.toList());
+        List<Long> foldersToBeDeleted = new ArrayList<>();
+        for (String f : folders) {
+            if (!products.contains(Long.valueOf(f))) {
+                //System.out.println(f);
+                foldersToBeDeleted.add(Long.valueOf(f));
+            }
+        }
+        long l = System.nanoTime();
+        ForkJoinPool pool = new ForkJoinPool(8);
+        Integer invoke = pool.invoke(new FileReviewer(0, products.size(), products.size(), products));
+        System.out.println(invoke);
+//        for (Long p : products) {
+//            serveFileSystem(p);
+//        }
+        System.out.println(System.nanoTime() - l);
+    }
+
+    class FileReviewer extends RecursiveTask<Integer> {
+        private int from, to;
+        private int N;
+        private List<Long> products;
+
+        public FileReviewer(int from, int to, int n, List<Long> products) {
+            this.from = from;
+            this.to = to;
+            N = n;
+            this.products = products;
+        }
+
+        @Override
+        protected Integer compute() {
+            if ((to - from) <= N / NUM_THREADS) {
+                for (int i = from; i < to; i++) {
+                    long ipk = products.get(i);
+                    serveFileSystem(ipk);
+                }
+                return to - from;
+            } else {
+                int mid = (from + to) / 2;
+                FileReviewer half1 = new FileReviewer(from, mid, N, products);
+                half1.fork();
+                FileReviewer half2 = new FileReviewer(mid, to, N, products);
+                Integer result = half2.compute();
+                return half1.join() + result;
+            }
+        }
+    }
 }

@@ -26,4 +26,6 @@ public interface ImagesEngine {
 
     void deleteImage(String address);
 
+    void reviewFS();
+
 }
