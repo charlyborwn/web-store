@@ -58,7 +58,8 @@
                     <h:outputText value="#{product.count}"/>
                 </p:column>
 
-                <p:column headerText="COUNTRY" filterMatchMode="startsWith" filterBy="#{product.country}" style="background-size: contain">
+                <p:column headerText="COUNTRY" filterMatchMode="startsWith" filterBy="#{product.country}"
+                          style="background-size: contain">
                     <h:outputText value="#{product.country}"/>
                 </p:column>
 
@@ -91,10 +92,10 @@
 
                 <p:column headerText="DO">
                     <p:commandButton id="deleteButton"
-                                   actionListener="#{productsSimpleBean.deleteProduct()}"
-                                   icon="ui-icon-minusthick" title="Delete"
-                                   update=":productList:tableStateDT :productList:count"
-                                   style="outline:none">
+                                     actionListener="#{productsSimpleBean.deleteProduct()}"
+                                     icon="ui-icon-minusthick" title="Delete"
+                                     update=":productList:tableStateDT :productList:count"
+                                     style="outline:none">
                         <f:param name="id" value="#{product.ipk}"/>
                         <p:ajax action="#{productsSimpleBean}.init()"/>
                     </p:commandButton>
@@ -113,8 +114,8 @@
                                style="align-content: flex-end;color: #052cb7;"/>
                 <p:commandLink value="Serve FS" action="#{imagesEngineImpl.reviewFS()}"
                                style="align-content: flex-end;color: #052cb7;"/>
-            </p:panelGrid>
 
+            </p:panelGrid>
         </h:form>
 
     </ui:define>
