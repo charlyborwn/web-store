@@ -13,4 +13,6 @@ public interface UserService {
 
     Users save(Users u);
 
+    boolean existsByMail(String mail);
+
 }

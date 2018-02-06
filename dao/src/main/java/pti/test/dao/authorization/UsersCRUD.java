@@ -42,4 +42,7 @@ public interface UsersCRUD extends CrudRepository<Users, Long> {
     @CacheEvict(value = {"users1", "users2"}, key = "#p0.id", allEntries = true)
     Users save(Users u);
 
+    @Cacheable({"users2"})
+    boolean existsByMail(String mail);
+
 }

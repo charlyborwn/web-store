@@ -69,7 +69,7 @@ public class UserEngineImpl implements UserEngine {
     @Override
     public Users findUserByMail(String mail) {
         if (users.size() == 0 | users.get(mail) == null) {
-            users.put(mail,userService.findByMail(mail));
+            users.put(mail, userService.findByMail(mail));
             return userService.findByMail(mail);
         }
         return users.get(mail);
@@ -108,4 +108,8 @@ public class UserEngineImpl implements UserEngine {
         return getUser().getName();
     }
 
+    @Override
+    public boolean existsByMail(String mail) {
+        return userService.existsByMail(mail);
+    }
 }

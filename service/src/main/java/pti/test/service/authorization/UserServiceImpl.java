@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
     public Users save(Users u) {
         return usersCRUD.save(u);
     }
+
+    @Override
+    public boolean existsByMail(String mail) {
+        return usersCRUD.existsByMail(mail);
+    }
 }

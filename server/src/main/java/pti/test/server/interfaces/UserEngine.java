@@ -30,4 +30,6 @@ public interface UserEngine {
 
     String getUserName();
 
+    boolean existsByMail(String mail);
+
 }

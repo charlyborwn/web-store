@@ -53,7 +53,7 @@ public class RegistrationBean {
     public void register() {
 
         if (!name.equals("") & !surname.equals("") & !mail.equals("") & !password.equals("")) {
-            if (userEngine.findUserByMail(mail) != null) {
+            if (userEngine.existsByMail(mail)) {
                 JSFMessages.error("User " + mail + " already exist.");
                 return;
             }
