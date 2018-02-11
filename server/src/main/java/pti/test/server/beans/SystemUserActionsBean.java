@@ -265,7 +265,7 @@ public class SystemUserActionsBean implements UserActions {
         } else {
             temp = user.getUsertemp();
         }
-        getCart().stream().forEach(x -> products.add(new StoredProduct(x.getProductDTO().getIpk(), x.getCount())));
+        getCart().forEach(x -> products.add(new StoredProduct(x.getProductDTO().getIpk(), x.getCount())));
         temp.put(LocalDateTime.now(), products);
         userEngine.setUserTemp(temp);
         userEngine.saveUser();
