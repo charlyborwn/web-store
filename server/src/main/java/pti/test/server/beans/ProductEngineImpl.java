@@ -11,6 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.*;
 
+/**
+ * @author Syrotyuk R.
+ */
 @ManagedBean
 @RestController
 @ViewScoped

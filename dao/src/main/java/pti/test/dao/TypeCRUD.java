@@ -12,6 +12,7 @@ import java.util.List;
  * This interface contains a methods for working with DB and
  * extends <code>CrudRepository</code> that allow to be confined
  * to only methods declaration.
+ * @author Syrotyuk R.
  */
 @Repository
 public interface TypeCRUD extends CrudRepository<Type, Long> {

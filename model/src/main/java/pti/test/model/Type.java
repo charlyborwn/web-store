@@ -6,6 +6,7 @@ import java.io.Serializable;
 /**
  * This is the reflection of <code>Type</code> entity in DB
  * on the java class.
+ * @author Syrotyuk R.
  */
 @Entity(name = "type")
 public class Type  implements Serializable {

@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+/**
+ * @author Syrotyuk R.
+ */
 public class MyProperties extends Properties{
 
     @Autowired

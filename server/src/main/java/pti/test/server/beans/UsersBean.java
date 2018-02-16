@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * This class is used for registered users list reflection.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

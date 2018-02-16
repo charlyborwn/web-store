@@ -38,6 +38,7 @@ import static java.time.format.DateTimeFormatter.*;
 /**
  * This class processes all users's storing actions
  * in cart and favourites pages. Secured by <code>SpringSecurity</code>.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

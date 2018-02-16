@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 /**
  * This is the reflection of <code>Users</code> entity in DB
  * on the java class. Holds user's data.
+ * @author Syrotyuk R.
  */
 @Entity(name = "users")
 public class Users implements Serializable {

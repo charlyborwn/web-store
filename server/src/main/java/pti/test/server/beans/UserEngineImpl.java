@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Syrotyuk R.
+ */
 @ManagedBean
 @RestController
 @ViewScoped

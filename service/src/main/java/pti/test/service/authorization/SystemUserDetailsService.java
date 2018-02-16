@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * This class is responsible for forming users authorities and saving its into
  * <code>UserDetails</code> object.
+ * @author Syrotyuk R.
  */
 @Service
 public class SystemUserDetailsService implements UserDetailsService {

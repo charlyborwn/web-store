@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * Responsible for generating check information and writing it to PDF document.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

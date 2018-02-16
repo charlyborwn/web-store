@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Responsible for generating information and writing it to PDF document.
+ * @author Syrotyuk R.
  */
 public interface CheckCreator {
 

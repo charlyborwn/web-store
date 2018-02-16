@@ -5,6 +5,9 @@ import pti.test.model.authorization.Users;
 
 import java.util.List;
 
+/**
+ * @author Syrotyuk R.
+ */
 public interface UserService {
 
     List<Users> findAll();

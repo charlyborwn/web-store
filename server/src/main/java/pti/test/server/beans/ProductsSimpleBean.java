@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for products main information list showing.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

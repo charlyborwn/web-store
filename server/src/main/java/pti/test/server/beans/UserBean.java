@@ -18,6 +18,7 @@ import java.util.*;
 /**
  * This class is responsible for all users's information
  * showing including shopping history.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

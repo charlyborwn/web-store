@@ -20,6 +20,7 @@ import java.util.*;
  * This class is used for obtaining information about
  * product. In addition it has a user's actions functionality
  * implementations.
+ * @author Syrotyuk R.
  */
 
 @ManagedBean

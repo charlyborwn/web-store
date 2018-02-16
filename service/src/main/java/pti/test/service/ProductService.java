@@ -5,6 +5,9 @@ import pti.test.model.Type;
 
 import java.util.List;
 
+/**
+ * @author Syrotyuk R.
+ */
 public interface ProductService {
 
     void delete(Product p);

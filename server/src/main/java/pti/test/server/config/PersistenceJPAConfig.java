@@ -16,7 +16,9 @@ import pti.test.server.MyProperties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
-
+/**
+ * @author Syrotyuk R.
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"pti.test.dao"})

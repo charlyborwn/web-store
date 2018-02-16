@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * This class is responsible for creating the
  * navigation tree that consists of product
  * findAll ang categories lists corresponding them.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

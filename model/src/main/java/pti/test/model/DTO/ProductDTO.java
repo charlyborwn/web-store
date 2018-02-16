@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 /**
  * Reflects <code>Product</code> entity class into working copy.
+ * @author Syrotyuk R.
  */
 public class ProductDTO {
 

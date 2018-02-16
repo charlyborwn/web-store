@@ -9,6 +9,7 @@ import java.util.HashMap;
 /**
  * THis class is used for comments holding as <code>HashMap</code>
  * where key is a random <code>String</code> value.
+ * @author Syrotyuk R.
  */
 public class Comment implements Serializable {
 

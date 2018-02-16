@@ -13,6 +13,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * <code>PRODUCT</code> controller.
+ * @author Syrotyuk R.
  */
 @RestController
 @RequestMapping(value = "/shop/")

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * Converts DTO to entity and entity do DTO classes.
+ * @author Syrotyuk R.
  */
 public class Converter {
 

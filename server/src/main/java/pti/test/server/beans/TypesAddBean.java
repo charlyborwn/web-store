@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 
 /**
  * This class is responsible for adding new product type or category.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

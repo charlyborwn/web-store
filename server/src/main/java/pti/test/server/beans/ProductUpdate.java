@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for updating information about product.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

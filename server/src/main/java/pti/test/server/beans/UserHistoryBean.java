@@ -17,6 +17,7 @@ import java.util.*;
 /**
  * This class is responsible for direct user's information
  * showing including user's shopping history. Secured by <code>SpringSecurity</code>.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

@@ -24,6 +24,9 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
+/**
+ * @author Syrotyuk R.
+ */
 @ManagedBean
 @RestController
 public class ImagesEngineImpl implements ImagesEngine {

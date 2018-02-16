@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * This class is responsible for requests delegation from controller level to DAO level.
+ * @author Syrotyuk R.
  */
 @Service
 public class TypeServiceImpl implements TypeService {

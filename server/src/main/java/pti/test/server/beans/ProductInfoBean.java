@@ -9,6 +9,7 @@ import java.util.HashMap;
 /**
  * This is a container of additional product information. Consists of
  * <code>HashMap</code> collection in which this information holds.
+ * @author Syrotyuk R.
  */
 
 @ManagedBean

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 /**
  * This interface corresponds for adding new ProductDTO to DB in case of success verifying process.
+ * @author Syrotyuk R.
  */
 public interface ProductAdd {
 

@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 /**
  * This class is responsible for user's dialog form
  * processing. Secured by <code>SpringSecurity</code>.
+ * @author Syrotyuk R.
  */
 
 @ManagedBean

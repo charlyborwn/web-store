@@ -8,6 +8,7 @@ import java.util.HashMap;
 /**
  * This is the reflection of <code>Product</code> entity in DB
  * on the java class.
+ * @author Syrotyuk R.
  */
 @Entity(name = "product")
 public class Product implements Serializable {

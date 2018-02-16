@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 /**
  * This class is responsible for user's registration process.
+ * @author Syrotyuk R.
  */
 
 @ManagedBean

@@ -22,6 +22,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Syrotyuk R.
+ */
 @ManagedBean
 @RestController
 @ViewScoped

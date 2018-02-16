@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
+/**
+ * @author Syrotyuk R.
+ */
 @SpringBootApplication
 @ComponentScan(value = {"pti.test"})
 @EnableCaching

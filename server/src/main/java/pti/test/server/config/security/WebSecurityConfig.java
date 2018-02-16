@@ -24,7 +24,9 @@ import pti.test.server.SuperRedirecter;
 import pti.test.server.config.jsf.JSFRedirectStrategy;
 import pti.test.service.authorization.SystemUserDetailsService;
 
-
+/**
+ * @author Syrotyuk R.
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

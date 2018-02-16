@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * This class is responsible for types and categories
  * lists forming.
+ * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController

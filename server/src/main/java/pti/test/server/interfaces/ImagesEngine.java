@@ -10,6 +10,9 @@ import javax.faces.bean.ManagedBean;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * @author Syrotyuk R.
+ */
 public interface ImagesEngine {
 
     String writeImage(BufferedImage image, String format, String address, String name) throws IOException;

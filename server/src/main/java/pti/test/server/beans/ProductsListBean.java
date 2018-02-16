@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for products list demonstration.
+ * @author Syrotyuk R.
  */
 
 @ManagedBean
