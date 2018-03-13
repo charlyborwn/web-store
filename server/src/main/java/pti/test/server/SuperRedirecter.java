@@ -5,24 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
-import pti.test.model.DTO.ProductDTO;
 import pti.test.model.authorization.Users;
-import pti.test.server.beans.SystemUserActionsBean;
 import pti.test.server.interfaces.UserEngine;
-import pti.test.service.authorization.UserService;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.jws.soap.SOAPBinding;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import java.io.IOException;
 
 /**
+ * This class is responsible for redirecting to defined URLs.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean

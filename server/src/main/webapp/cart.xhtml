@@ -54,7 +54,7 @@
                                         <p:outputPanel styleClass="leftAligned">
                                             <p:commandButton id="reduceButton"
                                                              action="#{systemUserActionsBean.reduceProductCount(prod)}"
-                                                             icon="ui-icon-minusthick" title="Delete"
+                                                             icon="ui-icon-minusthick" title="Reduce by one"
                                                              style="outline: none"
                                                              update=":cartForm:cartScroller :cartForm:info"/>
                                             <p:commandButton id="addButton"
@@ -64,7 +64,7 @@
                                                              update=":cartForm:cartScroller :cartForm:info"/>
                                             <p:commandButton id="deleteButton"
                                                              action="#{systemUserActionsBean.deleteFromCart(prod)}"
-                                                             icon="ui-icon-closethick" title="Delete drom cart"
+                                                             icon="ui-icon-closethick" title="Delete from cart"
                                                              style="outline: none"
                                                              update=":cartForm:cartScroller :cartForm:info"/>
                                             <p:blockUI block="product" trigger="reduceButton">

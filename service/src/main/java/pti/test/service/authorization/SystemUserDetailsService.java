@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * This class is responsible for forming users authorities and saving its into
  * <code>UserDetails</code> object.
+ *
  * @author Syrotyuk R.
  */
 @Service
@@ -24,8 +25,16 @@ public class SystemUserDetailsService implements UserDetailsService {
     @Autowired
     private UsersCRUD usersCRUD;
 
-    Users user;
+    private Users user;
 
+    /**
+     * Obtains users from database and provides the authorities policy
+     * for each of them.
+     *
+     * @param mail user's login/mail
+     * @return UserDetails instance with user's authorities
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
         try {

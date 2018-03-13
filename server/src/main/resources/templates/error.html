@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>ERROR</head>
+
+<body>
+<h2>Looks like some error was happened during program working. Application, don't get sick, OK?</h2>
+
+<p th:if="${exception}">
+    <b>Exception:</b> <span th:text="${exception}">exception</span> <span
+        th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+</p>
+
+<p th:if="${message}">
+    <b>Exception message:</b> <span th:text="${message}">message</span> <span
+        th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+</p>
+
+<p th:if="${url}">
+    <b>Page:</b> <span th:text="${url}">Page URL</span>
+</p>
+
+<p th:if="${date}" id='created'>
+    <b>Occurred:</b> <span th:text="${date}">Date</span>
+</p>
+
+<p th:if="${status}">
+    <b>Response Status:</b> <span th:text="${status}">status</span> <span
+        th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+</p>
+
+<p th:if="${code}">
+    <b>Status code:</b> <span th:text="${code}">code</span> <span
+        th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+</p>
+<p
+        th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">
+    Cause unknown (no exception details available)</p>
+
+</body>
+</html>

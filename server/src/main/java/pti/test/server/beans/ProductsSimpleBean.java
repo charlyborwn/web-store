@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import pti.test.model.DTO.ProductDTO;
-import pti.test.model.Type;
 import pti.test.server.JSFMessages;
 import pti.test.server.interfaces.ImagesEngine;
 import pti.test.server.interfaces.ProductEngine;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for products main information list showing.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean

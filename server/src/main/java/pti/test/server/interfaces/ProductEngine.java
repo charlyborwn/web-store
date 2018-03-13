@@ -1,10 +1,10 @@
 package pti.test.server.interfaces;
 
-import com.sun.scenario.effect.impl.prism.PrDrawable;
 import pti.test.model.DTO.ProductDTO;
 import pti.test.model.Product;
 
 import java.util.List;
+
 /**
  * @author Syrotyuk R.
  */

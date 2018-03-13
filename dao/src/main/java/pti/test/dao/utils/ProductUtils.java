@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * This class is used for direct commands invocation
  * without any instance creations.
+ *
  * @author Syrotyuk R.
  */
 @Repository
@@ -27,14 +28,16 @@ public class ProductUtils {
     EntityManager entityManager;
 
     /**
-     * Updates directly a count <code>Product</code> field value of the <code>Product</code>.  Uses the cache for fast working.
+     * Updates directly a count <code>Product</code> field value of the <code>Product</code>.
+     * Uses the cache for fast working.
+     *
      * @param value a new value
-     * @param ipk external product key
+     * @param ipk   individual product key
      */
     @CacheEvict(value = {"product1", "product2", "product3", "product4"}, key = "#p0.id", allEntries = true)
     public void updateCount(int value, long ipk) {
         try {
-            String hql = "UPDATE product p SET p.count = " + value + " where p.ipk = :ipk";
+            String hql = "UPDATE product p SET p.count = " + value + " WHERE p.ipk = :ipk";
             Query query = entityManager.createQuery(hql);
             query.setParameter("ipk", ipk);
             query.executeUpdate();

@@ -1,6 +1,5 @@
 package pti.test.server.beans;
 
-
 import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
@@ -15,7 +14,6 @@ import pti.test.server.interfaces.ProductEngine;
 import pti.test.server.interfaces.TypeEngine;
 import pti.test.server.interfaces.Update;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -25,6 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for updating information about product.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean

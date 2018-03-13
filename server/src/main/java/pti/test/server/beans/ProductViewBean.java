@@ -3,7 +3,6 @@ package pti.test.server.beans;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import pti.test.controller.Controller;
 import pti.test.model.Comment;
 import pti.test.model.DTO.ProductDTO;
 import pti.test.server.JSFMessages;
@@ -20,6 +19,7 @@ import java.util.*;
  * This class is used for obtaining information about
  * product. In addition it has a user's actions functionality
  * implementations.
+ *
  * @author Syrotyuk R.
  */
 
@@ -36,9 +36,6 @@ public class ProductViewBean {
 
     @Autowired
     private ImagesEngine imagesEngine;
-
-//    @Autowired
-//    private UserService userService;
 
     @Autowired
     private Logger logger;
@@ -114,7 +111,7 @@ public class ProductViewBean {
      */
     public String saled() {
         String s = product.getInfo().get("Discount");
-        if (s != null){
+        if (s != null) {
             return "Discount: " + (s.contains("%") ? s : s.concat("%"));
         }
         return "Discount: 0%";

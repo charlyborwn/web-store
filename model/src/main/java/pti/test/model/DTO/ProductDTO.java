@@ -5,9 +5,11 @@ import pti.test.model.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Reflects <code>Product</code> entity class into working copy.
+ *
  * @author Syrotyuk R.
  */
 public class ProductDTO {
@@ -128,6 +130,20 @@ public class ProductDTO {
                 ", name='" + name + '\'' +
                 ", ipk=" + ipk +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDTO that = (ProductDTO) o;
+        return ipk == that.ipk;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(ipk);
     }
 
 }

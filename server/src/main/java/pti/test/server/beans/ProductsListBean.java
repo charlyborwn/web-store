@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 
 /**
  * This class is responsible for products list demonstration.
+ *
  * @author Syrotyuk R.
  */
-
 @ManagedBean
 @RestController
 @Scope("view")
@@ -50,9 +50,8 @@ public class ProductsListBean {
      * only approaching products will be written.
      */
     public void init() {
-        long time = System.nanoTime();
         if ((searchRequest != null && !searchRequest.equals("")) & selectedCategory != null) {
-            if (itIsType(selectedCategory)) {
+            if (isType(selectedCategory)) {
                 productsDTO = productEngine.getProducts().stream()
                         .filter(x -> x.getType().getType().equals(selectedCategory))
                         .filter(x -> x.getName().toLowerCase().contains(searchRequest.toLowerCase()))
@@ -68,7 +67,7 @@ public class ProductsListBean {
                     .filter(x -> x.getName().toLowerCase().contains(searchRequest.toLowerCase()))
                     .collect(Collectors.toList());
         } else if (selectedCategory != null) {
-            if (itIsType(selectedCategory)) {
+            if (isType(selectedCategory)) {
                 productsDTO = productEngine.getProducts().stream().filter(x -> x.getType().getType().equals(selectedCategory))
                         .collect(Collectors.toList());
             } else {
@@ -78,7 +77,6 @@ public class ProductsListBean {
         } else {
             productsDTO = productEngine.getProducts();
         }
-        System.out.println(System.nanoTime() - time);
     }
 
     /**
@@ -88,7 +86,7 @@ public class ProductsListBean {
      * @return <code>true</code> if request represents type, <code>false</code>
      * if request represents category
      */
-    private boolean itIsType(String s) {
+    private boolean isType(String s) {
         List<Type> types = typeEngine.getTypeList();
         if (types.stream().anyMatch(x -> x.getType().equals(s))) {
             return true;
@@ -112,12 +110,10 @@ public class ProductsListBean {
      * @return selected product
      */
     public ProductDTO getSelectedProduct() {
-
         FacesContext context = FacesContext.getCurrentInstance();
         String id = context.getExternalContext().getRequestParameterMap().get("id");
         return id == null ? selectedProduct :
                 productsDTO.stream().filter(x -> x.getIpk() == Long.valueOf(id)).collect(Collectors.toList()).get(0);
-
     }
 
     public void setSelectedProduct(ProductDTO selectedProduct) {

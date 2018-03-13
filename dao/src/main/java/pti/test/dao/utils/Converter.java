@@ -9,12 +9,14 @@ import java.util.stream.Collectors;
 
 /**
  * Converts DTO to entity and entity do DTO classes.
+ *
  * @author Syrotyuk R.
  */
 public class Converter {
 
     /**
      * Converts DTO instance to <code>Product</code> one.
+     *
      * @param productDTO DTO instance to be converted
      * @return <code>Product</code> instance
      */
@@ -38,6 +40,7 @@ public class Converter {
 
     /**
      * Converts <code>Product</code> entity to DTO instance.
+     *
      * @param product <code>Product</code> instance to be converted
      * @return DTO instance
      */
@@ -60,6 +63,7 @@ public class Converter {
 
     /**
      * Converts <code>Product</code> collection to DTO reflection one.
+     *
      * @param products <code>Product</code> collection to be converted
      * @return <code>ProductDTO</code> collection
      */
@@ -70,7 +74,8 @@ public class Converter {
 
     /**
      * Updates <code>Product</code> from DTO reflection.
-     * @param product <code>Product</code> entity to be updated
+     *
+     * @param product    <code>Product</code> entity to be updated
      * @param productDTO new or updated <code>ProductDTO</code> object
      * @return updated <code>Product</code> entity
      */

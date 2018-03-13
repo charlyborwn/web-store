@@ -12,6 +12,9 @@ import javax.faces.bean.ViewScoped;
 import java.util.*;
 
 /**
+ * This class is responsible for all products operation delegation
+ * from Spring managed beans to controller level.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean
@@ -22,21 +25,22 @@ public class ProductEngineImpl implements ProductEngine {
     @Autowired
     private Controller controller;
 
+    /**
+     * Obtains the list of all products.
+     *
+     * @return the list of all products
+     */
     @Override
     public List<ProductDTO> getProducts() {
         return controller.findAll();
     }
 
-    @Override
-    public Product save(ProductDTO product) {
-        return controller.save(product);
-    }
-
-    @Override
-    public void updateCount(int value, long ipk) {
-        controller.updateCount(value, ipk);
-    }
-
+    /**
+     * Finds the product by it name.
+     *
+     * @param name product name
+     * @return product with specified name or null if such product not exists.
+     */
     @Override
     public ProductDTO findByName(String name) {
         if (controller.existsByName(name)) {
@@ -46,6 +50,12 @@ public class ProductEngineImpl implements ProductEngine {
         }
     }
 
+    /**
+     * Finds the product with specified individual product key.
+     *
+     * @param ipk specified individual product key
+     * @return the product with specified individual product key
+     */
     @Override
     public ProductDTO findByIpk(long ipk) {
         if (controller.existsByIpk(ipk)) {
@@ -55,11 +65,43 @@ public class ProductEngineImpl implements ProductEngine {
         }
     }
 
+    /**
+     * Saves or updates the product entity.
+     *
+     * @param product product entity to be saved or updated
+     * @return saved or updated product entity
+     */
+    @Override
+    public Product save(ProductDTO product) {
+        return controller.save(product);
+    }
+
+    /**
+     * Updates the product count.
+     *
+     * @param value new count value
+     * @param ipk   individual primary key
+     */
+    @Override
+    public void updateCount(int value, long ipk) {
+        controller.updateCount(ipk, value);
+    }
+
+    /**
+     * Deletes the product with given name.
+     *
+     * @param product product object to be deleted
+     */
     @Override
     public void delete(ProductDTO product) {
         controller.delete(product);
     }
 
+    /**
+     * Obtains the unique products kinds count.
+     *
+     * @return the count of existing products
+     */
     @Override
     public long count() {
         return controller.count();

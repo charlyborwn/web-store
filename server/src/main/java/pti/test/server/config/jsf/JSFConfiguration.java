@@ -62,28 +62,22 @@ public class JSFConfiguration {
             public void onStartup(ServletContext servletContext)
                     throws ServletException {
 
-                servletContext.setInitParameter("primefaces.THEME",
-                        "blitzer");
-                servletContext.setInitParameter("javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL","true");
-
-                servletContext.setInitParameter(
-                        "com.sun.faces.forceLoadConfiguration", "true");
-                servletContext.setInitParameter(
-                        "javax.faces.FACELETS_LIBRARIES",
-                        "/WEB-INF/springsecurity.taglib.xml");
+                servletContext.setInitParameter("javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL", "true");
+                servletContext.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
+                servletContext.setInitParameter("contextConfigLocation", "/WEB-INF/spring-security.xml");
                 servletContext.setInitParameter("javax.faces.FACELETS_LIBRARIES", "/WEB-INF/springsecurity.taglib.xml");
-
-                EnumSet<DispatcherType> tiposDispatcher = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
-                servletContext.addFilter("securityFilter",
-                        new DelegatingFilterProxy("springSecurityFilterChain")).addMappingForUrlPatterns(tiposDispatcher, false, "/*");
-
+                servletContext.setInitParameter("primefaces.THEME", "blitzer");
                 servletContext.setInitParameter("primefaces.UPLOADER", "commons");
 
-                servletContext.addFilter("PrimeFaces FileUpload Filter", new FileUploadFilter())
-                        .addMappingForServletNames(tiposDispatcher, false, "FacesServlet");
+                EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
 
+                servletContext.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
+                        .addMappingForUrlPatterns(dispatcherTypes, false, "/*");
                 servletContext.addFilter("errorHandlerFilter", new ViewExpiredExceptionFilter())
-                        .addMappingForUrlPatterns(tiposDispatcher,false, "/*");
+                        .addMappingForUrlPatterns(dispatcherTypes, false, "/*");
+                servletContext.addFilter("PrimeFaces FileUpload Filter", new FileUploadFilter())
+                        .addMappingForServletNames(dispatcherTypes, false, "FacesServlet");
+
             }
         };
     }

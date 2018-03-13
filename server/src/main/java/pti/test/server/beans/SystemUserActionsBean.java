@@ -9,7 +9,6 @@ import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RestController;
-import pti.test.controller.Controller;
 import pti.test.model.DTO.ProductDTO;
 import pti.test.model.StoredProduct;
 import pti.test.model.authorization.Users;
@@ -38,6 +37,7 @@ import static java.time.format.DateTimeFormatter.*;
 /**
  * This class processes all users's storing actions
  * in cart and favourites pages. Secured by <code>SpringSecurity</code>.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean
@@ -63,7 +63,7 @@ public class SystemUserActionsBean implements UserActions {
     private HashMap<Long, Integer> cart;
 
     /**
-     * For buying dialog and check information generation
+     * For buying dialog and check information generation.
      */
     private String name;
     private String surname;
@@ -167,7 +167,7 @@ public class SystemUserActionsBean implements UserActions {
     /**
      * Is responsible for user's product's count reducing actions.
      *
-     * @param p current product in cart.
+     * @param p current product in cart
      */
     public void reduceProductCount(CartProducts p) {
 
@@ -186,7 +186,7 @@ public class SystemUserActionsBean implements UserActions {
     /**
      * Is responsible for user's product's count inducing actions.
      *
-     * @param p current product in cart.
+     * @param p current product in cart
      */
     public void induceProductCount(CartProducts p) {
 
@@ -206,7 +206,7 @@ public class SystemUserActionsBean implements UserActions {
     /**
      * Is responsible for user's deleting actions.
      *
-     * @param p current product in cart.
+     * @param p current product in cart
      */
     public void deleteFromCart(CartProducts p) {
         HashMap<Long, Integer> products = userEngine.getUser().getProducts();
@@ -302,7 +302,7 @@ public class SystemUserActionsBean implements UserActions {
      * already present there. Max favourites list size is 6.
      *
      * @param ipk an external product's ID obtained as the method parameter
-     *            or from faces context.
+     *            or from faces context
      */
     public void addToFav(long ipk) {
         FacesContext context = FacesContext.getCurrentInstance();

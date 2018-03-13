@@ -43,6 +43,12 @@ public interface UsersCRUD extends CrudRepository<Users, Long> {
     @CacheEvict(value = {"users1", "users2"}, key = "#p0.id", allEntries = true)
     Users save(Users u);
 
+    /**
+     * Obtains the existence of user in database by his mail/login.
+     *
+     * @param mail user mail/login
+     * @return true if user exists, false in other case
+     */
     @Cacheable({"users2"})
     boolean existsByMail(String mail);
 

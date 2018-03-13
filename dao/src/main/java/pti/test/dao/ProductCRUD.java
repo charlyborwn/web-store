@@ -12,28 +12,11 @@ import java.util.List;
  * This interface contains a methods for working with DB and
  * extends <code>CrudRepository</code> that allow to be confined
  * to only methods declaration.
+ *
  * @author Syrotyuk R.
  */
 @Repository
 public interface ProductCRUD extends CrudRepository<Product, Long> {
-
-    /**
-     * Deletes the entity from Products table both in the cache and DB.
-     *
-     * @param p <code>Product</code> to be deleted
-     */
-
-    @CacheEvict(value = {"product1", "product2", "product3", "product4", "product5"}, key = "#p0.id", allEntries = true)
-    void delete(Product p);
-
-    /**
-     * Saves the entity to Products table both in the cache and DB or updates the existing entity.
-     *
-     * @param p <code>Product</code> to be saved or updated
-     * @return saved or updated entity
-     */
-    @CacheEvict(value = {"product1", "product2", "product3", "product4", "product5"}, key = "#p0.id", allEntries = true)
-    Product save(Product p);
 
     /**
      * Gets all entities from product table in DB and puts its to the cache
@@ -41,7 +24,6 @@ public interface ProductCRUD extends CrudRepository<Product, Long> {
      *
      * @return all entities from users table in DB
      */
-
     @Cacheable({"product1", "product2"})
     List<Product> findAll();
 
@@ -64,15 +46,54 @@ public interface ProductCRUD extends CrudRepository<Product, Long> {
     Product findFirstByName(String name);
 
     /**
+     * Saves the entity to Products table both in the cache and DB or updates the existing entity.
+     *
+     * @param p <code>Product</code> to be saved or updated
+     * @return saved or updated entity
+     */
+    @CacheEvict(value = {"product1", "product2", "product3", "product4", "product5"}, key = "#p0.id", allEntries = true)
+    Product save(Product p);
+
+    /**
+     * Deletes the entity from Products table both in the cache and DB.
+     *
+     * @param p <code>Product</code> to be deleted
+     */
+    @CacheEvict(value = {"product1", "product2", "product3", "product4", "product5"}, key = "#p0.id", allEntries = true)
+    void delete(Product p);
+
+    /**
+     * Deletes the entity with given individual primary key from
+     * products table both in the cache and DB.
+     *
+     * @param ipk product individual primary key
+     */
+    @CacheEvict(value = {"product1", "product2", "product3", "product4", "product5"}, key = "#p0.id", allEntries = true)
+    void deleteByIpk(long ipk);
+
+    /**
      * Obtains the count of products in table.
      *
      * @return the count of products in table
      */
     long count();
 
+    /**
+     * Obtains the existence of product in database by its individual
+     * primary key.
+     *
+     * @param ipk product individual primary key
+     * @return true if product exists, false in other case
+     */
     @Cacheable({"product5"})
     boolean existsByIpk(long ipk);
 
+    /**
+     * Obtains the existence of product in database by its name.
+     *
+     * @param name product name
+     * @return true if product exists, false in other case
+     */
     @Cacheable({"product5"})
     boolean existsByName(String name);
 

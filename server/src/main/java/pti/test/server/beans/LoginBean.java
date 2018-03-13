@@ -22,6 +22,7 @@ import java.io.IOException;
 
 /**
  * This class is responsible for authorization.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean

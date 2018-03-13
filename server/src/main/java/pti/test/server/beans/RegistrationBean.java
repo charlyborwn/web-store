@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pti.test.model.authorization.Users;
 import pti.test.server.JSFMessages;
 import pti.test.server.interfaces.UserEngine;
-import pti.test.service.authorization.UserService;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -18,12 +18,14 @@ import java.util.HashMap;
 
 /**
  * This class is responsible for user's registration process.
+ *
  * @author Syrotyuk R.
  */
 
 @ManagedBean
 @RestController
-@Scope("view")
+//@Scope("view")
+@RequestScoped
 public class RegistrationBean {
 
     @Autowired
@@ -40,10 +42,10 @@ public class RegistrationBean {
     @Size(min = 3, max = 12)
     private String surname;
 
-    @Pattern(regexp = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[a-zA-Z]{2,4}$", message = "Not correct email")
+    @Pattern(regexp = "^[\\w\\-]([.\\w])+[\\w]+@([\\w\\-]+\\.)+[a-zA-Z]{2,4}$", message = "Not correct email.")
     private String mail;
 
-    @Size(min = 5, max = 15, message = "Wrong size for password")
+    @Size(min = 5, max = 15, message = "Wrong size for password.")
     private String password;
 
     /**
@@ -55,7 +57,7 @@ public class RegistrationBean {
 
         if (!name.equals("") & !surname.equals("") & !mail.equals("") & !password.equals("")) {
             if (userEngine.existsByMail(mail)) {
-                JSFMessages.error("User " + mail + " already exist.");
+                JSFMessages.error("User " + mail + " already exists.");
                 return;
             }
             user = new Users();
@@ -72,7 +74,7 @@ public class RegistrationBean {
             logger.info("Registration successful.");
             JSFMessages.info("Registration successful.");
         } else {
-            JSFMessages.error("Enter all of fields.");
+            JSFMessages.error("Enter all fields.");
         }
 
     }

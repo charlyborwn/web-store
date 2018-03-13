@@ -25,6 +25,9 @@ import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
 /**
+ * This class is responsible for all operations with image objects
+ * and working with file system.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean
@@ -39,6 +42,15 @@ public class ImagesEngineImpl implements ImagesEngine {
     @Autowired
     private Logger logger;
 
+    /**
+     * Writes an image to file system.
+     *
+     * @param image   image object to be written
+     * @param format  image format
+     * @param address relative image address
+     * @param name    image name
+     * @return the saved image relative address
+     */
     @Override
     public String writeImage(BufferedImage image, String format, String address, String name) {
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
@@ -57,6 +69,15 @@ public class ImagesEngineImpl implements ImagesEngine {
 
     }
 
+    /**
+     * Resizes proportionally an image to specified size.
+     *
+     * @param upl    uploaded image
+     * @param width  new image width
+     * @param height new image height
+     * @return resized image as BufferedImage
+     * @throws IOException
+     */
     @Override
     public BufferedImage resizeImage(UploadedFile upl, int width, int height) throws IOException {
         BufferedImage input = ImageIO.read(upl.getInputstream());
@@ -80,6 +101,12 @@ public class ImagesEngineImpl implements ImagesEngine {
         return output;
     }
 
+    /**
+     * Converts an image to StreamedContent object.
+     *
+     * @param address image relative address
+     * @return an image as StreamedContent object
+     */
     @Override
     public StreamedContent streamedImage(String address) {
         String path = MyProperties.getInstance().getProperty("images_path");
@@ -95,6 +122,12 @@ public class ImagesEngineImpl implements ImagesEngine {
         return streamedContent;
     }
 
+    /**
+     * Deletes all product gallery images from file system.
+     *
+     * @param ipk product individual primary key
+     * @return true if deleting was successful, false in other case
+     */
     @Override
     public boolean clearImagesFromFileSystem(long ipk) {
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
@@ -108,6 +141,12 @@ public class ImagesEngineImpl implements ImagesEngine {
         return true;
     }
 
+    /**
+     * Deletes all product images and folders from file system.
+     *
+     * @param ipk product individual primary key
+     * @return true if deleting was successful, false in other case
+     */
     @Override
     public boolean deleteProductImages(long ipk) {
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
@@ -133,6 +172,16 @@ public class ImagesEngineImpl implements ImagesEngine {
         return deleteImages & deleteFolder & deleteMainImage;
     }
 
+    /**
+     * This method reviews the file system and product galleria in database
+     * for any non-accordances. If there are any files present in product
+     * main folder except its main image, this files will be deleted. If there
+     * are any files present in product gallery directory, which are not
+     * linked to the product, this files will be deleted. If there are any
+     * non-valid links in product galleria, this links will be deleted.
+     *
+     * @param ipk product individual primary key
+     */
     @Override
     public void serveFileSystem(long ipk) {
         String path = MyProperties.getInstance().getProperty("images_path");
@@ -151,13 +200,14 @@ public class ImagesEngineImpl implements ImagesEngine {
         ArrayList<String> images = productImages.stream()
                 .map(x -> path.concat(x).replaceAll("//", "/"))
                 .collect(Collectors.toCollection(ArrayList::new));
-        if (!imagesPath.exists() || imagesPath.listFiles().length == 0) {
+        if (!imagesPath.exists() || Objects.requireNonNull(imagesPath.listFiles()).length == 0) {
             logger.warn("No images in product folder: ID " + ipk);
             productImages.clear();
             return;
         }
         List<String> imageAddresses = Arrays.stream(Objects.requireNonNull(imagesPath.listFiles()))
-                .map(File::getAbsolutePath).collect(Collectors.toList());
+                .map(File::getAbsolutePath)
+                .collect(Collectors.toList());
         for (String s : images) {
             File image = new File(s);
             if (!image.exists()) {
@@ -177,6 +227,11 @@ public class ImagesEngineImpl implements ImagesEngine {
         logger.info("Product folder processing ended.");
     }
 
+    /**
+     * Deletes an image from file system by its address
+     *
+     * @param address image address
+     */
     @Override
     public void deleteImage(String address) {
         String path = MyProperties.getInstance().getProperty("images_path");
@@ -187,11 +242,16 @@ public class ImagesEngineImpl implements ImagesEngine {
         }
     }
 
+    /**
+     * Reviews all products folders for any non-accordances.
+     * Uses the fork-join technology to get maximum performance.
+     */
     @Override
     public void reviewFS() {
         List<Long> products = productEngine.getProducts().stream().map(ProductDTO::getIpk).collect(Collectors.toList());
         String path = MyProperties.getInstance().getProperty("images_path").concat("/toys/");
         List<String> folders = Arrays.asList(new File(path).listFiles()).stream().map(x -> x.getName()).collect(Collectors.toList());
+        Arrays.asList(new File(path).listFiles()).stream().filter(File::isFile).forEach(x -> x.delete());
         for (String f : folders) {
             try {
                 if (!products.contains(Long.valueOf(f))) {
@@ -201,11 +261,17 @@ public class ImagesEngineImpl implements ImagesEngine {
                 deleteFolder(new File(path.concat("/") + f));
             }
         }
-        ForkJoinPool pool = new ForkJoinPool(8);
+        ForkJoinPool pool = new ForkJoinPool(24);
         Integer invoke = pool.invoke(new FileReviewer(0, products.size(), products.size(), products));
         System.out.println(invoke);
     }
 
+    /**
+     * Recursive method for deleting any files or folders that are not
+     * in accordance with products files.
+     *
+     * @param folder folder to be processed
+     */
     private synchronized void deleteFolder(File folder) {
         if (folder.getAbsolutePath().replaceAll("\\\\", "/")
                 .equals(MyProperties.getInstance().getProperty("images_path").concat("/toys"))) {
@@ -221,7 +287,7 @@ public class ImagesEngineImpl implements ImagesEngine {
             deleteFolder(folder.getParentFile());
         } else {
             List<File> files = Arrays.asList(folder.listFiles());
-            if (files.size() > 100) {
+            if (files.size() > 15) {
                 return;
             }
             for (File f : files) {
@@ -244,6 +310,10 @@ public class ImagesEngineImpl implements ImagesEngine {
         return;
     }
 
+    /**
+     * This class implements the fork-join functionality for
+     * file system serving.
+     */
     class FileReviewer extends RecursiveTask<Integer> {
         private int from, to;
         private int N;
@@ -274,6 +344,5 @@ public class ImagesEngineImpl implements ImagesEngine {
             }
         }
     }
-
 
 }

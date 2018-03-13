@@ -9,17 +9,18 @@ import pti.test.model.authorization.Users;
 import pti.test.server.interfaces.UserEngine;
 import pti.test.service.authorization.UserService;
 
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * This class holds all user operations methods and passes its
+ * to service level.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean
@@ -32,10 +33,16 @@ public class UserEngineImpl implements UserEngine {
 
     private static ConcurrentHashMap<String, Users> users = new ConcurrentHashMap<>();
 
+    /**
+     * Returns the current user, obtains all users from database and puts
+     * theirs into synchronized HashMap to increase the site velocity.
+     *
+     * @return current user authorities as UserDetails object
+     */
     @Override
     public Users getUser() {
         if (users.size() == 0) {
-            userService.findAll().stream().forEach(x -> users.put(x.getMail(), x));
+            userService.findAll().forEach(x -> users.put(x.getMail(), x));
         }
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -51,6 +58,9 @@ public class UserEngineImpl implements UserEngine {
         }
     }
 
+    /**
+     * Updates currant user.
+     */
     @Override
     public void saveUser() {
         Users user = getUser();
@@ -58,17 +68,33 @@ public class UserEngineImpl implements UserEngine {
         users.put(user.getMail(), user);
     }
 
+    /**
+     * Saves a new user or updates the existing one.
+     *
+     * @param user user instance to be saved or updated
+     */
     @Override
     public void saveUser(Users user) {
         userService.save(user);
         users.put(user.getMail(), user);
     }
 
+    /**
+     * Gets all entities from users table in DB.
+     *
+     * @return all entities from users table in DB
+     */
     @Override
     public List<Users> findAllUsers() {
         return userService.findAll();
     }
 
+    /**
+     * Gets only user with certain mail.
+     *
+     * @param mail user login
+     * @return only items with certain mail
+     */
     @Override
     public Users findUserByMail(String mail) {
         if (users.size() == 0 | users.get(mail) == null) {
@@ -78,6 +104,11 @@ public class UserEngineImpl implements UserEngine {
         return users.get(mail);
     }
 
+    /**
+     * Sets the user favourites.
+     *
+     * @param favourites
+     */
     @Override
     public void setUserFavourites(ArrayList<Long> favourites) {
         Users user = getUser();
@@ -85,6 +116,11 @@ public class UserEngineImpl implements UserEngine {
         users.put(user.getMail(), user);
     }
 
+    /**
+     * Sets the user history.
+     *
+     * @param history
+     */
     @Override
     public void setUserHistory(HashMap<LocalDateTime, List<StoredProduct>> history) {
         Users user = getUser();
@@ -92,6 +128,11 @@ public class UserEngineImpl implements UserEngine {
         users.put(user.getMail(), user);
     }
 
+    /**
+     * Sets the user current orders.
+     *
+     * @param temp
+     */
     @Override
     public void setUserTemp(HashMap<LocalDateTime, List<StoredProduct>> temp) {
         Users user = getUser();
@@ -99,6 +140,11 @@ public class UserEngineImpl implements UserEngine {
         users.put(user.getMail(), user);
     }
 
+    /**
+     * Sets the user cart.
+     *
+     * @param cart
+     */
     @Override
     public void setUserCart(HashMap<Long, Integer> cart) {
         Users user = getUser();
@@ -106,13 +152,26 @@ public class UserEngineImpl implements UserEngine {
         users.put(user.getMail(), user);
     }
 
+    /**
+     * Obtains current user name.
+     *
+     * @return current user name
+     */
     @Override
     public String getUserName() {
         return getUser().getName();
     }
 
+    /**
+     * Obtains the user existence by his login/mail.
+     *
+     * @param mail user login/mail
+     * @return true is user with specified mail exists, false in
+     * other case
+     */
     @Override
     public boolean existsByMail(String mail) {
         return userService.existsByMail(mail);
     }
+
 }

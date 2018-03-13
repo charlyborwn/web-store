@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 /**
+ * Class for property list creating. Singleton.
+ *
  * @author Syrotyuk R.
  */
 public class MyProperties extends Properties{
@@ -19,6 +21,11 @@ public class MyProperties extends Properties{
     private MyProperties() {
     }
 
+    /**
+     * Getter fot PropertyList instance. Fills a property list from application properties file.
+     *
+     * @return the only one PropertyList instance
+     */
     public static Properties getInstance() {
         if (properties == null) {
             properties = getProperties();

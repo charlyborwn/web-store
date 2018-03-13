@@ -11,6 +11,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * This interface defines all operations with image objects
+ * and working with file system.
+ *
  * @author Syrotyuk R.
  */
 public interface ImagesEngine {

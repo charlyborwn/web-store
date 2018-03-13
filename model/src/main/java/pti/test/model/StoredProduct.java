@@ -5,9 +5,10 @@ import java.io.Serializable;
 /**
  * This class used for stored products placing into user's <code>History</code>
  * and user's <code>Cart</code>.
+ *
  * @author Syrotyuk R.
  */
-public class StoredProduct implements Serializable{
+public class StoredProduct implements Serializable {
 
     private Long ipk;
     private int count;

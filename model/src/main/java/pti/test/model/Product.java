@@ -4,10 +4,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * This is the reflection of <code>Product</code> entity in DB
  * on the java class.
+ *
  * @author Syrotyuk R.
  */
 @Entity(name = "product")
@@ -29,7 +32,6 @@ public class Product implements Serializable {
     @Column(name = "count", nullable = false)
     private int count;
 
-    //make columns
     @Column(name = "info")
     private HashMap<String, String> info;
 
@@ -39,7 +41,6 @@ public class Product implements Serializable {
     @Column(name = "PIC", nullable = false)
     private String pic;
 
-    //make separate table
     @Lob
     @Column(name = "PICS", nullable = false)
     private ArrayList<String> pics;
@@ -53,10 +54,24 @@ public class Product implements Serializable {
     @Column(name = "SUPPLIER")
     private String supplier;
 
-    //make separate table
     @Lob
     @Column(name = "COMMENTS")
     private Comment comments;
+
+    public Product() {
+    }
+
+    public Product(String name, double price, int count, long ipk, String pic, Type type, String country, String supplier) {
+        this.name = name;
+        this.price = price;
+        this.count = count;
+        this.ipk = ipk;
+        this.pic = pic;
+        this.type = type;
+        this.country = country;
+        this.supplier = supplier;
+        this.pics = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
@@ -152,6 +167,34 @@ public class Product implements Serializable {
 
     public Comment getComments() {
         return comments;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", count=" + count +
+                ", ipk=" + ipk +
+                ", type=" + type +
+                ", country='" + country + '\'' +
+                ", supplier='" + supplier + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 
 }

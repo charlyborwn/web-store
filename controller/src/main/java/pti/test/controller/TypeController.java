@@ -1,24 +1,36 @@
 package pti.test.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import pti.test.model.Type;
-import pti.test.service.TypeService;
 
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 /**
- * <code>TYPE</code> controller.
+ * The interface for <code>Type</code> controller.
+ *
  * @author Syrotyuk R.
  */
 public interface TypeController {
 
-    void save(Type type);
-
+    /**
+     * Finds all types from database.
+     *
+     * @return all types from database
+     */
     List<Type> findAll();
 
-    Type typeByCategory(String category);
+    /**
+     * Finds the type with specified subtype.
+     *
+     * @param subtype specified subtype
+     * @return the type with specified subtype
+     */
+    Type typeByCategory(String subtype);
+
+    /**
+     * Saves the type to database.
+     *
+     * @param type type to be created
+     */
+    void save(Type type);
 
 }

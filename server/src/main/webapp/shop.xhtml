@@ -15,7 +15,7 @@
 
     <p:layout style="min-width:1000px; width: 1000px;margin-left:13%">
 
-        <p:layoutUnit position="north" size="100" style="border: hidden;">
+        <p:layoutUnit position="north" size="138" style="border: hidden;">
             <p:layout>
                 <p:layoutUnit position="west" size="160" style="border: hidden;text-align:center">
                     <h:outputLabel value="Hello, #{userEngineImpl.getUserName()}" style="font-size: smaller"/>
@@ -30,7 +30,7 @@
                     </sec:authorize>
                 </p:layoutUnit>
                 <p:layoutUnit position="center" style="border: hidden;text-align:center">
-                    <h:graphicImage name="/icons/logo.png"/>
+                    <h:graphicImage name="/icons/logo2.png"/>
                 </p:layoutUnit>
                 <p:layoutUnit position="east" size="90" style="border: hidden;">
                     <h:form>
@@ -49,7 +49,7 @@
             <ui:include src="cart_mini.xhtml"/>
         </p:layoutUnit>
 
-        <p:layoutUnit position="center" style="height: 1000px">
+        <p:layoutUnit position="center" style="height: 850px">
             <h:form id="center">
                 <ui:include src="productListForUser.xhtml"/>
             </h:form>

@@ -1,13 +1,10 @@
 package pti.test.server.beans;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RestController;
-import pti.test.controller.TypeController;
 import pti.test.model.Type;
 import pti.test.server.interfaces.TypeEngine;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;

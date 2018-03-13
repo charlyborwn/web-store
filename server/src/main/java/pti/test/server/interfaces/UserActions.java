@@ -2,6 +2,7 @@ package pti.test.server.interfaces;
 
 /**
  * This interface processes users's storing actions.
+ *
  * @author Syrotyuk R.
  */
 public interface UserActions {

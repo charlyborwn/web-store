@@ -4,12 +4,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
+ * This class is responsible for creating of information,
+ * warning and error faces messages.
+ *
  * @author Syrotyuk R.
  */
-public abstract class JSFMessages {
-
-    private JSFMessages() {
-    }
+public class JSFMessages {
 
     public static void info(String message, String details) {
         FacesContext.getCurrentInstance().addMessage(null,

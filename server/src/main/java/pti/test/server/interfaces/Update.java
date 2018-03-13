@@ -4,6 +4,7 @@ import java.io.IOException;
 
 /**
  * This interface is responsible for updating information about entity.
+ *
  * @author Syrotyuk R.
  */
 public interface Update {

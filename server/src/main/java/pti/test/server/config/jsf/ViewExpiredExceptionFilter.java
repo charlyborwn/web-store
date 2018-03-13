@@ -1,17 +1,26 @@
 package pti.test.server.config.jsf;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import pti.test.server.ExceptionsHandler;
+
 import javax.faces.application.ViewExpiredException;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class ViewExpiredExceptionFilter implements Filter {
 
+    @Autowired
+    private ExceptionsHandler exceptionsHandler;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        ApplicationContext ctx = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(filterConfig.getServletContext());
+        this.exceptionsHandler = ctx.getBean(ExceptionsHandler.class);
     }
 
     @Override
@@ -22,18 +31,19 @@ public class ViewExpiredExceptionFilter implements Filter {
         try {
             chain.doFilter(req, response);
         } catch (Exception e) {
-
             if (e.getCause() instanceof ViewExpiredException) {
                 String url = "";
-                String queryString = "";
                 if (request instanceof HttpServletRequest) {
-                    url = ((HttpServletRequest)request).getRequestURL().toString();
-                    queryString = ((HttpServletRequest)request).getQueryString();
+                    url = ((HttpServletRequest) request).getRequestURL().toString();
                 }
                 HttpServletResponse httpResponse = (HttpServletResponse) response;
-                httpResponse.sendRedirect("/expired.xhtml?url="+url);
+                httpResponse.sendRedirect("/expired.xhtml?url=" + url);
             } else {
-                throw e;
+                try {
+                    exceptionsHandler.handleGenericException(e, req);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         }
     }

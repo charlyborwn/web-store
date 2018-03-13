@@ -10,7 +10,8 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
- * <code>TYPE</code> controller.
+ * <code>Type</code> controller.
+ *
  * @author Syrotyuk R.
  */
 @RestController
@@ -20,19 +21,37 @@ public class TypeControllerImpl implements TypeController {
     @Autowired
     private TypeService typeService;
 
-    @RequestMapping(value = "/findAll/add", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
-    public void save(@RequestBody Type type) {
-        typeService.save(type);
-    }
-
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    /**
+     * Obtains the request at defined URL and finds all types
+     * from database.
+     *
+     * @return all types from database
+     */
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Type> findAll() {
         return typeService.findAll();
     }
 
-    @RequestMapping(value = "/findAll/{concrete}", method = RequestMethod.GET)
-    public Type typeByCategory(@PathVariable(value = "concrete") String category) {
-        return typeService.findFirstByCategory(category);
+    /**
+     * Obtains the request at defined URL and finds the type
+     * with specified subtype.
+     *
+     * @param subtype specified subtype
+     * @return the type with specified subtype
+     */
+    @RequestMapping(value = "/{subtype}", method = RequestMethod.GET)
+    public Type typeByCategory(@PathVariable(value = "subtype") String subtype) {
+        return typeService.findFirstByCategory(subtype);
+    }
+
+    /**
+     * Obtains the request at defined URL and saves the type to database.
+     *
+     * @param type type to be created
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
+    public void save(@RequestBody Type type) {
+        typeService.save(type);
     }
 
 }

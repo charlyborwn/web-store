@@ -9,6 +9,7 @@ import java.util.HashMap;
 /**
  * This is a container of additional product information. Consists of
  * <code>HashMap</code> collection in which this information holds.
+ *
  * @author Syrotyuk R.
  */
 
@@ -25,6 +26,7 @@ public class ProductInfoBean {
 
     /**
      * Getter of additional product information collection.
+     *
      * @return <code>HashMap</code> collection
      */
     public HashMap<String, String> getInfo() {

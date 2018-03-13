@@ -3,6 +3,7 @@ package pti.test.server.beans;
 /**
  * Used for main product information collecting. Consists of
  * bought product name, external ID and count.
+ *
  * @author Syrotyuk R.
  */
 public class LightInfo {

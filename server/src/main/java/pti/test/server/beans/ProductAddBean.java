@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class corresponds for adding new ProductDTO to DB in case of success verifying process.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean

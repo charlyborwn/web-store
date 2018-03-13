@@ -10,12 +10,14 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 /**
+ * This class is responsible for redirecting to defined URLs.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean
 @RestController
 @Scope("view")
-public final class Redirecter {
+public class Redirecter {
 
     private final static Logger LOG = LoggerFactory.getLogger(Redirecter.class);
 
@@ -28,9 +30,6 @@ public final class Redirecter {
     public static final String ADD = "/admin/add_product.xhtml";
     public static final String ADD_TYPE = "/admin/add_types.xhtml";
     public static final String USERS = "/admin/users.xhtml";
-
-    private Redirecter() {
-    }
 
     public static void redirectToPage(String url) {
         try {

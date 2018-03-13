@@ -8,9 +8,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+
 /**
  * This is the reflection of <code>Users</code> entity in DB
  * on the java class. Holds user's data.
+ *
  * @author Syrotyuk R.
  */
 @Entity(name = "users")
@@ -38,24 +41,35 @@ public class Users implements Serializable {
     @Column(name = "role")
     private String role;
 
-    //make separate table
     @Lob
     @Column(name = "products")
     private HashMap<Long, Integer> products;
 
-    //make separate table
     @Column(name = "favourites")
     private ArrayList<Long> favourites;
 
-    //make separate table
     @Lob
     @Column(name = "userhistory")
     private HashMap<LocalDateTime, List<StoredProduct>> userhistory;
 
-    //make separate table
     @Lob
     @Column(name = "usertemp")
     private HashMap<LocalDateTime, List<StoredProduct>> usertemp;
+
+    public Users() {
+    }
+
+    public Users(String name, String surname, String mail, String password, String role) {
+        this.name = name;
+        this.surname = surname;
+        this.mail = mail;
+        this.password = password;
+        this.role = role;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -127,6 +141,30 @@ public class Users implements Serializable {
 
     public void setUsertemp(HashMap<LocalDateTime, List<StoredProduct>> usertemp) {
         this.usertemp = usertemp;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", mail='" + mail + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return Objects.equals(mail, users.mail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mail);
     }
 
 }

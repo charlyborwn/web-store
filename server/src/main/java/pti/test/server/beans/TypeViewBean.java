@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * This class is responsible for creating the
  * navigation tree that consists of product
  * findAll ang categories lists corresponding them.
+ *
  * @author Syrotyuk R.
  */
 @ManagedBean
@@ -38,6 +39,7 @@ public class TypeViewBean {
     /**
      * Forms the <code>TreeNode</code> tree that consists of product
      * findAll ang categories lists corresponding them.
+     *
      * @return <code>TreeNode</code> filled with product
      * findAll ang categories
      */
